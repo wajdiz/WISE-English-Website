@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Scams Scenarios - Online Toxicity Education</title>
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --accent-color: #ff6b6b;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #FF512F, #F09819);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .breadcrumbs {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumbs a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+        
+        .intro {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .intro-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .scenario-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .scenario {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .scenario-header {
+            background-color: #FF512F;
+            color: white;
+            padding: 15px 20px;
+        }
+        
+        .scenario-title {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .scenario-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .scenario-content {
+            padding: 20px;
+        }
+        
+        .scenario-description {
+            margin-bottom: 20px;
+        }
+        
+        .chat-container {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .message-bubble {
+            max-width: 80%;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 18px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .received {
+            background-color: #e5e5ea;
+            align-self: flex-start;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .sent {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+            text-align: right;
+        }
+        
+        .message-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .message-sender {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .message-time {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .message-content {
+            word-break: break-word;
+        }
+        
+        .impact-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .impact-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .response-options {
+            margin-top: 20px;
+        }
+        
+        .response-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .option:hover {
+            background-color: #e5e5ea;
+        }
+        
+        .option.recommended {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .option.not-recommended {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .option-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .expert-tip {
+            background-color: rgba(255, 81, 47, 0.1);
+            border-left: 4px solid #FF512F;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .expert-tip-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #FF512F;
+        }
+        
+        .resources {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .resources-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .resources-list {
+            list-style-type: none;
+        }
+        
+        .resources-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .resources-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .resources-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .resources-list a:hover {
+            text-decoration: underline;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .nav-button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .back-to-home {
+            background-color: #6c757d;
+        }
+        
+        .back-to-home:hover {
+            background-color: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .scenario-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Online Scams Scenarios</h1>
+                <p class="subtitle">Understanding, recognizing, and responding to online scams</p>
+            </div>
+        </header>
+        
+        <div class="breadcrumbs">
+            <a href="../index.html">Home</a> &gt; <a href="../index.html#understand-section">Understanding Online Toxicity</a> &gt; Online Scams Scenarios
+        </div>
+        
+        <div class="intro">
+            <h2 class="intro-title">What are Online Scams?</h2>
+            <p>Online scams are deceptive schemes designed to trick people into giving away money, personal information, or access to their accounts. Scammers often create a sense of urgency, excitement, or fear to manipulate victims into making quick decisions without careful consideration. Young people can be particularly vulnerable to certain types of scams, especially those involving gaming, social media, or trendy products.</p>
+            <p>The following scenarios illustrate different forms of online scams and provide guidance on how to recognize and respond effectively.</p>
+        </div>
+        
+        <div class="scenario-container">
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 1: Free Gift Card Scam</h3>
+                    <p class="scenario-subtitle">Social Media Platform</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Noah, 14, receives a direct message from what appears to be a popular gaming company offering free gift cards in exchange for completing a survey and sharing his account information.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">GamezWorld_Official:</span>
+                                <span class="message-time">4:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>CONGRATULATIONS! You've been randomly selected to receive a $100 GamezWorld gift card! 🎮 We're giving away 50 gift cards to loyal players like you. Complete this quick survey and provide your account details to claim your prize: [suspicious link]</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Noah:</span>
+                                <span class="message-time">4:20 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Really? That's awesome! How did I get selected?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">GamezWorld_Official:</span>
+                                <span class="message-time">4:22 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>You were chosen based on your activity on our platform! But hurry, this offer expires in 30 minutes! Click the link now to claim your gift card before someone else gets it!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Noah:</span>
+                                <span class="message-time">4:25 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Wait, I'm checking the official GamezWorld social media accounts and I don't see anything about a gift card giveaway. And your account name is slightly different from their official one...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">GamezWorld_Official:</span>
+                                <span class="message-time">4:27 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>This is a special promotion for select users only! That's why it's not public. You only have 25 minutes left! Don't miss out on your FREE $100!</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Falling for gift card scams can lead to:</p>
+                        <ul>
+                            <li>Theft of personal information and account credentials</li>
+                            <li>Unauthorized purchases using your account or payment methods</li>
+                            <li>Installation of malware if suspicious links are clicked</li>
+                            <li>Loss of access to gaming or social media accounts</li>
+                            <li>Financial loss if scammers gain access to payment information</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Verify Through Official Channels</span>
+                                <p>Check the company's official website or verified social media accounts to confirm if they're actually running such a promotion.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Report the Account</span>
+                                <p>Report the suspicious account to the platform for impersonating a company and attempting to scam users.</p>
+                            </div>
+                            
+                            <div class="option not-recommended">
+                                <span class="option-label">Not Recommended: Clicking Suspicious Links</span>
+                                <p>Never click on links from unknown or suspicious sources, even if they promise free rewards or gifts.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Legitimate companies rarely contact individuals out of the blue to offer free gifts or rewards. They also never ask for account credentials or personal information through direct messages. Be especially wary of messages that create a sense of urgency ("offer expires in 30 minutes") or exclusivity ("special promotion for select users only") as these are classic pressure tactics used by scammers to prevent you from taking time to verify their claims.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 2: Account Recovery Scam</h3>
+                    <p class="scenario-subtitle">Gaming Platform</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Sophia, 16, receives a message from someone claiming to be a platform administrator, saying her gaming account has been flagged for suspicious activity and she needs to provide her login credentials to verify her identity and prevent account deletion.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Admin_Support_Team:</span>
+                                <span class="message-time">Tuesday, 7:30 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>URGENT NOTICE: Your account has been flagged for suspicious activity and potential Terms of Service violations. You must verify your identity within 24 hours or your account will be permanently deleted. Reply with your account email and password to begin the verification process.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Sophia:</span>
+                                <span class="message-time">Tuesday, 7:35 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>What? I haven't done anything wrong! What suspicious activity?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Admin_Support_Team:</span>
+                                <span class="message-time">Tuesday, 7:37 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Our system detected multiple login attempts from different locations. This is a standard security check. We need your login credentials to verify you are the legitimate account owner. This is the only way to prevent permanent account deletion.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Sophia:</span>
+                                <span class="message-time">Tuesday, 7:40 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>I don't think real admins would ask for my password. I'm going to check the official support page instead.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Admin_Support_Team:</span>
+                                <span class="message-time">Tuesday, 7:42 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>This is a special emergency procedure. If you don't comply immediately, we cannot guarantee your account will be recoverable. You have 23 hours remaining before permanent deletion.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Falling for account recovery scams can lead to:</p>
+                        <ul>
+                            <li>Complete loss of access to your gaming or social media accounts</li>
+                            <li>Theft of virtual items, in-game currency, or purchased content</li>
+                            <li>Scammers using your account to scam others in your friend list</li>
+                            <li>Exposure of personal information stored in your account</li>
+                            <li>Financial loss if payment methods are saved to the account</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Contact Official Support</span>
+                                <p>Ignore the message and contact the platform's official support through their website or app to verify if there are any actual issues with your account.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Report the Scam Attempt</span>
+                                <p>Report the account that sent the message to the platform for impersonating administrators and attempting to steal account credentials.</p>
+                            </div>
+                            
+                            <div class="option not-recommended">
+                                <span class="option-label">Not Recommended: Sharing Login Credentials</span>
+                                <p>Never share your password, verification codes, or other account credentials with anyone, even if they claim to be platform administrators or support staff.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Legitimate platform administrators and support staff will never ask for your full password or login credentials. If there's a genuine issue with your account, they have internal tools to address it without needing your password. Always access support services through the official website or app, not through messages you receive. Remember that scammers often create a false sense of urgency to pressure you into making hasty decisions.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 3: Fake Marketplace Listing</h3>
+                    <p class="scenario-subtitle">Online Marketplace</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Ethan, 17, finds an incredible deal on a high-end gaming console on an online marketplace. The seller is offering it for 70% below retail price but requires payment through a non-standard method before shipping.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Marketplace Listing:</span>
+                                <span class="message-time">Friday, 3:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>BRAND NEW Gaming Console XS Pro - $150 (Retail $499)</p>
+                                <p>Still in sealed box. Unwanted gift. Need to sell quickly. First come, first served. No returns.</p>
+                                <p>[Stock photo of gaming console]</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Ethan:</span>
+                                <span class="message-time">Friday, 3:30 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Hi, I'm interested in the gaming console. Is it still available? That's an amazing price!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Seller:</span>
+                                <span class="message-time">Friday, 3:35 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Yes still available but I have many people interested. If you want it, you need to send payment now to secure it. I can't use the marketplace payment system due to account issues. Send money via gift card codes or wire transfer and I'll ship it tomorrow.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Ethan:</span>
+                                <span class="message-time">Friday, 3:40 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Can I see more photos of the actual console you have? And why can't we use the regular marketplace payment system?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Seller:</span>
+                                <span class="message-time">Friday, 3:45 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Can't take more photos right now as it's packaged for shipping. I have 3 other buyers ready to pay. If you want it, you need to send payment in the next hour. I only accept gift cards or wire transfer because the marketplace holds funds for too long.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Falling for marketplace scams can lead to:</p>
+                        <ul>
+                            <li>Financial loss with no way to recover the money</li>
+                            <li>No product received after payment is sent</li>
+                            <li>Receiving counterfeit or broken items</li>
+                            <li>Exposure of personal information if shipping details are provided</li>
+                            <li>Potential for identity theft if too much personal information is shared</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Use Platform Protection</span>
+                                <p>Only make purchases through the marketplace's official payment system, which typically offers buyer protection and dispute resolution.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Research Market Value</span>
+                                <p>Be skeptical of deals that seem too good to be true. Research the typical resale value of items to recognize unrealistic discounts.</p>
+                            </div>
+                            
+                            <div class="option not-recommended">
+                                <span class="option-label">Not Recommended: Alternative Payment Methods</span>
+                                <p>Avoid payment methods that offer no protection or recourse, such as wire transfers, cryptocurrency, gift card codes, or money transfer apps to strangers.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>When shopping on online marketplaces, remember that scammers often create a sense of competition ("3 other buyers ready to pay") and urgency ("need to send payment in the next hour") to pressure you into making quick decisions. Legitimate sellers will generally be willing to provide additional photos of the actual item, answer questions about the product, and use the platform's standard payment methods. If a seller insists on payment methods that offer no buyer protection, it's almost always a scam.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h3 class="resources-title">Additional Resources for Dealing with Online Scams</h3>
+            <ul class="resources-list">
+                <li><a href="https://www.consumer.ftc.gov/features/scam-alerts" target="_blank">FTC Scam Alerts</a> - Up-to-date information on the latest scams</li>
+                <li><a href="https://www.usa.gov/online-safety" target="_blank">USA.gov Online Safety</a> - Resources for staying safe online and avoiding scams</li>
+                <li><a href="https://www.bbb.org/scamtracker" target="_blank">BBB Scam Tracker</a> - Tool for reporting and researching scams in your area</li>
+                <li><a href="https://www.ic3.gov/" target="_blank">FBI Internet Crime Complaint Center</a> - Where to report internet crimes and scams</li>
+            </ul>
+        </div>
+        
+        <div class="navigation-buttons">
+            <a href="scenario_privacy_violations.html" class="nav-button">Previous: Privacy Violations Scenarios</a>
+            <a href="../index.html" class="nav-button back-to-home">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

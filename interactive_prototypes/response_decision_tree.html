@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Response Strategy Decision Tree</title>
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --accent-color: #ff6b6b;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        .scenario-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .scenario-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .scenario-description {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .message-bubble {
+            max-width: 80%;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 18px;
+            position: relative;
+            font-size: 1rem;
+        }
+        
+        .received {
+            background-color: #e5e5ea;
+            align-self: flex-start;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .sent {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .option-btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            font-size: 1rem;
+            text-align: left;
+            transition: all var(--transition-speed);
+            position: relative;
+            padding-right: 40px;
+        }
+        
+        .option-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .option-btn::after {
+            content: "→";
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+        
+        .outcome-container {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .outcome-title {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .outcome-description {
+            margin-bottom: 15px;
+        }
+        
+        .outcome-result {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .outcome-positive {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: var(--success-color);
+        }
+        
+        .outcome-neutral {
+            background-color: rgba(255, 193, 7, 0.1);
+            color: var(--warning-color);
+        }
+        
+        .outcome-negative {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .back-btn {
+            background-color: #e5e5ea;
+            color: var(--text-color);
+        }
+        
+        .back-btn:hover {
+            background-color: #d5d5da;
+        }
+        
+        .next-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .next-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .save-btn {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .save-btn:hover {
+            background-color: #218838;
+        }
+        
+        .toolkit-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            padding: 15px;
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            transform: translateX(350px);
+            transition: transform var(--transition-speed);
+            z-index: 100;
+        }
+        
+        .toolkit-container.active {
+            transform: translateX(0);
+        }
+        
+        .toolkit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .toolkit-title {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .toolkit-toggle {
+            position: absolute;
+            left: -40px;
+            top: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+        
+        .toolkit-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .toolkit-item {
+            padding: 10px;
+            background-color: var(--light-bg);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .toolkit-item:hover {
+            background-color: #e5e5ea;
+        }
+        
+        .toolkit-item.saved {
+            background-color: rgba(40, 167, 69, 0.1);
+            border-left: 3px solid var(--success-color);
+        }
+        
+        .emergency-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .emergency-btn:hover {
+            background-color: #c82333;
+        }
+        
+        .emergency-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s;
+        }
+        
+        .emergency-content {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+        }
+        
+        .emergency-title {
+            color: var(--danger-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .emergency-title::before {
+            content: "⚠️";
+        }
+        
+        .emergency-actions {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .emergency-action {
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .emergency-action-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+        
+        .emergency-action-content {
+            flex: 1;
+        }
+        
+        .emergency-action-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .close-emergency {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .close-emergency:hover {
+            background-color: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .scenario-container {
+                padding: 20px;
+            }
+            
+            .toolkit-container {
+                width: 250px;
+            }
+            
+            .action-btns {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>How to Respond to Online Toxicity</h1>
+            <p class="subtitle">Navigate through different scenarios and learn effective response strategies</p>
+        </header>
+        
+        <div class="scenario-container" id="scenario-1">
+            <h2 class="scenario-title">Scenario: Mean Comments on Social Media</h2>
+            <p class="scenario-description">You posted a photo of your new art project that you're really proud of. Shortly after, you notice these comments:</p>
+            
+            <div class="chat-container">
+                <div class="message-bubble received">
+                    <strong>@GameMaster42:</strong> This is so bad lol. My little sister could do better and she's 5.
+                </div>
+                <div class="message-bubble received">
+                    <strong>@CoolKid2010:</strong> Why would you even post this? 🤣 #epicfail
+                </div>
+                <div class="message-bubble received">
+                    <strong>@ArtCritic99:</strong> Is this supposed to be art? Looks like trash to me.
+                </div>
+            </div>
+            
+            <p class="scenario-description">How do you respond to these comments?</p>
+            
+            <div class="options-container">
+                <button class="option-btn" data-outcome="outcome-1">Respond with anger: "If you don't like it, just keep scrolling! You're just jealous because you can't create anything yourselves!"</button>
+                
+                <button class="option-btn" data-outcome="outcome-2">Respond with empathy: "I appreciate the feedback. Art is subjective, and I'm still learning and improving my skills. I'm proud of my progress so far."</button>
+                
+                <button class="option-btn" data-outcome="outcome-3">Ignore and block: Don't respond to the comments, but block the users and report any that violate community guidelines.</button>
+                
+                <button class="option-btn" data-outcome="outcome-4">Use humor: "Thanks for the constructive criticism! My next masterpiece will feature all your lovely comments as inspiration. Stay tuned! 😊"</button>
+            </div>
+            
+            <div class="outcome-container" id="outcome-1">
+                <h3 class="outcome-title">Outcome: Escalation</h3>
+                <div class="outcome-result outcome-negative">This approach often leads to more conflict</div>
+                <p class="outcome-description">Responding with anger might feel good in the moment, but it usually makes the situation worse. The commenters are likely looking for a reaction, and showing them they've upset you can encourage more negative comments.</p>
+                
+                <div class="chat-container">
+                    <div class="message-bubble sent">
+                        If you don't like it, just keep scrolling! You're just jealous because you can't create anything yourselves!
+                    </div>
+                    <div class="message-bubble received">
+                        <strong>@GameMaster42:</strong> Lol triggered much? Can't handle criticism?
+                    </div>
+                    <div class="message-bubble received">
+                        <strong>@CoolKid2010:</strong> Someone's mad 🔥 This is even funnier than the "art" 😂
+                    </div>
+                    <div class="message-bubble received">
+                        <strong>@RandomUser55:</strong> Wow, saw this drama and had to comment. Why so defensive if you're actually proud of it?
+                    </div>
+                </div>
+                
+                <p class="outcome-description">Notice how your angry response attracted even more negative attention and comments. The situation has escalated, and now more people are joining in.</p>
+                
+                <div class="action-btns">
+                    <button class="action-btn back-btn">Try Another Response</button>
+                </div>
+            </div>
+            
+            <div class="outcome-container" id="outcome-2">
+                <h3 class="outcome-title">Outcome: Defusing the Situation</h3>
+                <div class="outcome-result outcome-positive">This approach often leads to positive resolution</div>
+                <p class="outcome-description">Responding with empathy and confidence shows emotional maturity. By acknowledging that art is subjective and expressing pride in your work, you demonstrate that you're open to feedback without letting it diminish your self-worth.</p>
+                
+                <div class="chat-container">
+                    <div class="message-bubble sent">
+                        I appreciate the feedback. Art is subjective, and I'm still learning and improving my skills. I'm proud of my progress so far.
+                    </div>
+                    <div class="message-bubble received">
+                        <strong>@ArtCritic99:</strong> Whatever, at least you're trying I guess.
+                    </div>
+                    <div class="message-bubble received">
+                        <strong>@SupportiveUser3:</strong> I actually think it's really good! Don't listen to the haters. Keep creating! ❤️
+                    </div>
+                </div>
+                
+                <p class="outcome-description">Your mature response didn't give the negative commenters the reaction they wanted. It also attracted positive support from others who appreciate your attitude. The original commenters may lose interest when they don't get an emotional reaction.</p>
+                
+                <div class="action-btns">
+                    <button class="action-btn back-btn">Try Another Response</button>
+                    <button class="action-btn save-btn" data-strategy="Respond with empathy">Save This Strategy</button>
+                </div>
+            </div>
+            
+            <div class="outcome-container" id="outcome-3">
+                <h3 class="outcome-title">Outcome: Removing the Negativity</h3>
+                <div class="outcome-result outcome-positive">This approach effectively limits your exposure to toxicity</div>
+                <p class="outcome-description">Sometimes the best response is no response at all. By blocking users who leave mean comments, you prevent them from commenting on your future posts. Reporting comments that violate community guidelines can also help keep the platform safer for everyone.</p>
+                
+                <div class="chat-container">
+                    <div class="message-bubble received">
+                        <strong>System:</strong> You have blocked @GameMaster42, @CoolKid2010, and @ArtCritic99. They will no longer be able to see your posts or contact you.
+                    </div>
+                    <div class="message-bubble received">
+                        <strong>System:</strong> Thank you for your report. We'll review the comments you flagged and take appropriate action.
+                    </div>
+                </div>
+                
+                <p class="outcome-description">By blocking and reporting, you've taken control of your online space. You don't need to engage with people who aren't providing constructive feedback. This approach works well when you don't want to engage at all with negative comments.</p>
+                
+                <div class="action-btns">
+                    <button class="action-btn back-btn">Try Another Response</button>
+                    <button class="action-btn save-btn" data-strategy="Ignore and block">Save This Strategy</button>
+                </div>
+            </div>
+            
+            <div class="outcome-container" id="outcome-4">
+                <h3 class="outcome-title">Outcome: Disarming with Humor</h3>
+                <div class="outcome-result outcome-neutral">This approach can work but depends on the situation</div>
+                <p class="outcome-description">Using humor can sometimes defuse a tense situation by showing that the comments don't bother you. However, this approach requires confidence and the right tone to be effective.</p>
+                
+                <div class="chat-container">
+                    <div class="message-bubble sent">
+                        Thanks for the constructive criticism! My next masterpiece will feature all your lovely comments as inspiration. Stay tuned! 😊
+                    </div>
+                    <div class="message-bubble received">
+                        <strong>@GameMaster42:</strong> Lol whatever
+                    </div>
+                    <div class="message-bubble received">
+                        <strong>@ArtistFriend:</strong> 😂 Perfect response! Can't wait to see that masterpiece!
+                    </div>
+                </div>
+                
+                <p class="outcome-description">Your humorous response shows you're not affected by the negativity, which can take the power away from the mean comments. Some people may still continue with negative comments, but others might appreciate your ability to stay positive.</p>
+                
+                <div class="action-btns">
+                    <button class="action-btn back-btn">Try Another Response</button>
+                    <button class="action-btn save-btn" data-strategy="Use humor">Save This Strategy</button>
+                </div>
+            </div>
+        </div>
+        
+        <button class="emergency-btn">Emergency Help: Serious Threats or Harassment</button>
+    </div>
+    
+    <div class="toolkit-container" id="toolkit">
+        <button class="toolkit-toggle">🛠️</button>
+        <div class="toolkit-header">
+            <h3 class="toolkit-title">Your Response Toolkit</h3>
+        </div>
+        <div class="toolkit-items" id="toolkit-items">
+            <p>Save effective strategies to build your personal response toolkit!</p>
+        </div>
+    </div>
+    
+    <div class="emergency-container" id="emergency-help">
+        <div class="emergency-content">
+            <h3 class="emergency-title">Emergency Response for Serious Situations</h3>
+            <p>If you're experiencing severe harassment, threats, or feel unsafe, take these steps immediately:</p>
+            
+            <div class="emergency-actions">
+                <div class="emergency-action">
+                    <div class="emergency-action-icon">1</div>
+                    <div class="emergency-action-content">
+                        <div class="emergency-action-title">Document Everything</div>
+                        <p>Take screenshots of threatening messages, including usernames and timestamps.</p>
+                    </div>
+                </div>
+                
+                <div class="emergency-action">
+                    <div class="emergency-action-icon">2</div>
+                    <div class="emergency-action-content">
+                        <div class="emergency-action-title">Report to the Platform</div>
+                        <p>Use the platform's reporting tools to flag serious threats or harassment.</p>
+                    </div>
+                </div>
+                
+                <div class="emergency-action">
+                    <div class="emergency-action-icon">3</div>
+                    <div class="emergency-action-content">
+                        <div class="emergency-action-title">Tell a Trusted Adult</div>
+                        <p>Immediately inform a parent, teacher, or other trusted adult about the situation.</p>
+                    </div>
+                </div>
+                
+                <div class="emergency-action">
+                    <div class="emergency-action-icon">4</div>
+                    <div class="emergency-action-content">
+                        <div class="emergency-action-title">Contact Authorities if Necessary</div>
+                        <p>For serious threats to safety, contact local law enforcement or call emergency services.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="close-emergency">Close</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const optionButtons = document.querySelectorAll('.option-btn');
+            const backButtons = document.querySelectorAll('.back-btn');
+            const saveButtons = document.querySelectorAll('.save-btn');
+            const toolkitToggle = document.querySelector('.toolkit-toggle');
+            const toolkit = document.getElementById('toolkit');
+            const toolkitItems = document.getElementById('toolkit-items');
+            const emergencyBtn = document.querySelector('.emergency-btn');
+            const emergencyContainer = document.getElementById('emergency-help');
+            const closeEmergency = document.querySelector('.close-emergency');
+            
+            // Handle option selection
+            optionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const outcomeId = this.getAttribute('data-outcome');
+                    const outcome = document.getElementById(outcomeId);
+                    
+                    // Hide all outcomes
+                    document.querySelectorAll('.outcome-container').forEach(container => {
+                        container.style.display = 'none';
+                    });
+                    
+                    // Show selected outcome
+                    outcome.style.display = 'block';
+                    
+                    // Scroll to outcome
+                    outcome.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            });
+            
+            // Handle back button
+            backButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const outcome = this.closest('.outcome-container');
+                    outcome.style.display = 'none';
+                    
+                    // Scroll back to options
+                    document.querySelector('.options-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            });
+            
+            // Handle save button
+            saveButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const strategy = this.getAttribute('data-strategy');
+                    
+                    // Check if strategy is already saved
+                    const existingItems = document.querySelectorAll('.toolkit-item');
+                    let alreadySaved = false;
+                    
+                    existingItems.forEach(item => {
+                        if (item.textContent === strategy) {
+                            alreadySaved = true;
+                            item.classList.add('saved');
+                            
+                            // Highlight effect
+                            setTimeout(() => {
+                                item.classList.remove('saved');
+                            }, 2000);
+                        }
+                    });
+                    
+                    if (!alreadySaved) {
+                        const newItem = document.createElement('div');
+                        newItem.classList.add('toolkit-item', 'saved');
+                        newItem.textContent = strategy;
+                        toolkitItems.appendChild(newItem);
+                        
+                        // Remove saved class after animation
+                        setTimeout(() => {
+                            newItem.classList.remove('saved');
+                        }, 2000);
+                    }
+                    
+                    // Show toolkit if it's not already visible
+                    toolkit.classList.add('active');
+                });
+            });
+            
+            // Toggle toolkit
+            toolkitToggle.addEventListener('click', function() {
+                toolkit.classList.toggle('active');
+            });
+            
+            // Emergency button
+            emergencyBtn.addEventListener('click', function() {
+                emergencyContainer.style.display = 'flex';
+            });
+            
+            // Close emergency
+            closeEmergency.addEventListener('click', function() {
+                emergencyContainer.style.display = 'none';
+            });
+            
+            // Close emergency when clicking outside
+            emergencyContainer.addEventListener('click', function(e) {
+                if (e.target === emergencyContainer) {
+                    emergencyContainer.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

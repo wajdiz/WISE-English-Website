@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Violations Scenarios - Online Toxicity Education</title>
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --accent-color: #ff6b6b;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #9733EE, #DA22FF);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .breadcrumbs {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumbs a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+        
+        .intro {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .intro-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .scenario-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .scenario {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .scenario-header {
+            background-color: #9733EE;
+            color: white;
+            padding: 15px 20px;
+        }
+        
+        .scenario-title {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .scenario-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .scenario-content {
+            padding: 20px;
+        }
+        
+        .scenario-description {
+            margin-bottom: 20px;
+        }
+        
+        .chat-container {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .message-bubble {
+            max-width: 80%;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 18px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .received {
+            background-color: #e5e5ea;
+            align-self: flex-start;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .sent {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+            text-align: right;
+        }
+        
+        .message-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .message-sender {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .message-time {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .message-content {
+            word-break: break-word;
+        }
+        
+        .impact-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .impact-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .response-options {
+            margin-top: 20px;
+        }
+        
+        .response-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .option:hover {
+            background-color: #e5e5ea;
+        }
+        
+        .option.recommended {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .option.not-recommended {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .option-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .expert-tip {
+            background-color: rgba(151, 51, 238, 0.1);
+            border-left: 4px solid #9733EE;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .expert-tip-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #9733EE;
+        }
+        
+        .resources {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .resources-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .resources-list {
+            list-style-type: none;
+        }
+        
+        .resources-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .resources-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .resources-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .resources-list a:hover {
+            text-decoration: underline;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .nav-button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .back-to-home {
+            background-color: #6c757d;
+        }
+        
+        .back-to-home:hover {
+            background-color: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .scenario-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Privacy Violations Scenarios</h1>
+                <p class="subtitle">Understanding, recognizing, and responding to online privacy violations</p>
+            </div>
+        </header>
+        
+        <div class="breadcrumbs">
+            <a href="../index.html">Home</a> &gt; <a href="../index.html#understand-section">Understanding Online Toxicity</a> &gt; Privacy Violations Scenarios
+        </div>
+        
+        <div class="intro">
+            <h2 class="intro-title">What are Online Privacy Violations?</h2>
+            <p>Online privacy violations occur when someone's personal information is shared, accessed, or used without their consent. This can include sharing private conversations, photos, or personal details that were meant to be kept confidential. Privacy violations can range from relatively minor breaches to serious exposures that can impact someone's safety, relationships, or reputation.</p>
+            <p>The following scenarios illustrate different forms of online privacy violations and provide guidance on how to respond effectively.</p>
+        </div>
+        
+        <div class="scenario-container">
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 1: Sharing Private Messages</h3>
+                    <p class="scenario-subtitle">Social Media Platform</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Zoe, 16, discovers that a friend has taken screenshots of their private conversation and shared them with a group chat. The conversation included personal feelings Zoe had shared in confidence about another classmate.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Zoe:</span>
+                                <span class="message-time">Yesterday, 4:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Can I tell you something in confidence? I'm really struggling with how to handle the situation with Jamie. I feel like they've been distant lately and I'm worried I did something wrong.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Friend:</span>
+                                <span class="message-time">Yesterday, 4:20 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Of course! You can tell me anything. I won't share it with anyone.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Zoe:</span>
+                                <span class="message-time">Yesterday, 4:25 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>I think Jamie might be upset because I got the lead in the school play. I overheard them saying some pretty harsh things about my performance to someone else. I'm really hurt but don't want to make things worse by confronting them.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Different Friend:</span>
+                                <span class="message-time">Today, 10:30 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Hey Zoe, I just wanted to let you know that screenshots of your private conversation about Jamie are being shared in the theater group chat. I thought you should know.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Zoe:</span>
+                                <span class="message-time">Today, 10:35 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>What?! I shared that in confidence. I'm so embarrassed and upset right now. Thank you for letting me know.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Sharing private messages without consent can lead to:</p>
+                        <ul>
+                            <li>Breach of trust in friendships and relationships</li>
+                            <li>Embarrassment and social anxiety</li>
+                            <li>Damage to multiple relationships (both with the person who shared and those discussed)</li>
+                            <li>Reluctance to share feelings or seek support in the future</li>
+                            <li>Escalation of existing conflicts or creation of new ones</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Direct Conversation</span>
+                                <p>Have a calm, private conversation with the friend who shared your messages to express how their actions impacted you and why consent matters in private communications.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Damage Control</span>
+                                <p>Reach out to the person discussed in the messages (Jamie) to explain the situation and that you didn't intend for your private feelings to be shared publicly.</p>
+                            </div>
+                            
+                            <div class="option not-recommended">
+                                <span class="option-label">Not Recommended: Public Callout</span>
+                                <p>Publicly calling out the friend who violated your privacy might feel justified but can escalate the situation and create more drama without resolving the underlying issue.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>When someone shares your private messages without permission, it's natural to feel betrayed and angry. However, responding thoughtfully rather than reactively can help prevent further damage. In your conversation with the person who shared your messages, use "I" statements to express how their actions made you feel rather than making accusations. For example, "I felt really hurt and betrayed when I found out my private messages were shared" is more effective than "You're a terrible friend for sharing my messages."</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 2: Sharing Someone's Location</h3>
+                    <p class="scenario-subtitle">Social Media Platform</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Marcus, 15, posts a photo with friends at a local cafe. One of his followers comments with Marcus's home address, saying "Isn't this close to where you live on [specific address]?" Marcus had never publicly shared his home address.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Marcus's Post:</span>
+                                <span class="message-time">Saturday, 3:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Great afternoon hanging out with the squad at Riverside Cafe! ☕️ #weekendvibes #friends</p>
+                                <p>[Photo of Marcus and friends at a cafe]</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Follower1:</span>
+                                <span class="message-time">Saturday, 3:30 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>You guys look like you're having fun! That place has the best muffins.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Follower2:</span>
+                                <span class="message-time">Saturday, 3:45 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Isn't that close to where you live on 123 Maple Street? I walked by your house yesterday!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Marcus (Direct Message):</span>
+                                <span class="message-time">Saturday, 3:50 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Hey, I noticed you posted my home address in the comments of my photo. I'm not comfortable with my address being public. Could you please delete that comment?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Follower2:</span>
+                                <span class="message-time">Saturday, 4:05 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Oh sorry! I didn't think it was a big deal since I've seen you there. I'll delete it right away.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Sharing someone's location or address without consent can lead to:</p>
+                        <ul>
+                            <li>Safety concerns and increased vulnerability</li>
+                            <li>Anxiety about personal security</li>
+                            <li>Potential for stalking or unwanted visits</li>
+                            <li>Need to be more cautious about future posts and activities</li>
+                            <li>Loss of sense of privacy and security in one's home</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Request Removal</span>
+                                <p>Directly ask the person who shared your address to remove the comment, explaining your privacy concerns.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Report the Comment</span>
+                                <p>If the person doesn't remove the comment or if you're uncomfortable asking directly, report the comment to the platform for sharing personal information without consent.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Review Privacy Settings</span>
+                                <p>Check your social media privacy settings to ensure you're not inadvertently sharing location data with your posts and limit who can comment on your content.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Many people don't realize that sharing someone else's address or precise location is a privacy violation, even if they discovered that information through legitimate means (like visiting your home). When addressing this situation, it can be helpful to frame it as an educational moment rather than an accusation. Most platforms have specific policies against sharing private information like home addresses, and you can reference these policies when asking for content to be removed.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 3: Sharing Photos Without Consent</h3>
+                    <p class="scenario-subtitle">Messaging App</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Leila, 17, discovers that photos of her from a friend's party have been shared in a large group chat without her knowledge or permission. In some of the photos, she's making silly faces or is caught in unflattering moments she wouldn't want widely shared.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Classmate:</span>
+                                <span class="message-time">Monday, 10:15 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Hey Leila, just wanted to let you know that Ryan shared a bunch of photos from Saturday's party in the class group chat. There are some... interesting ones of you in there.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Leila:</span>
+                                <span class="message-time">Monday, 10:20 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>What? I didn't even know he was taking photos of me. What kind of photos are they?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Classmate:</span>
+                                <span class="message-time">Monday, 10:25 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Nothing inappropriate, but there's one where you're making a weird face while eating and another where you're dancing that's kind of blurry. Some people are making jokes about them.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Leila:</span>
+                                <span class="message-time">Monday, 10:30 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>I'm really not comfortable with those being shared without my permission. I'm going to message Ryan about it.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Leila (to Ryan):</span>
+                                <span class="message-time">Monday, 10:35 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Hey Ryan, I heard you shared some photos of me from the party in the class group chat. I'm not comfortable with that since you didn't ask me first. Could you please remove them?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Sharing photos without consent can lead to:</p>
+                        <ul>
+                            <li>Embarrassment and social anxiety</li>
+                            <li>Damage to carefully curated online image or reputation</li>
+                            <li>Feeling violated and loss of control over personal image</li>
+                            <li>Reluctance to participate in social events for fear of unwanted documentation</li>
+                            <li>Potential for photos to be taken out of context or misused</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Direct Request</span>
+                                <p>Ask the person who shared the photos to remove them, explaining that you didn't consent to having them shared publicly.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Establish Boundaries</span>
+                                <p>Clearly communicate your boundaries about photo-sharing for future events, letting friends know you'd like to approve photos before they're shared.</p>
+                            </div>
+                            
+                            <div class="option not-recommended">
+                                <span class="option-label">Not Recommended: Retaliatory Sharing</span>
+                                <p>Sharing unflattering photos of the person who violated your privacy might feel like justice but perpetuates the cycle of privacy violations and can escalate the situation.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Many people don't realize that sharing photos of others without permission is a privacy violation, especially in the age of casual social media posting. When addressing this issue, it can be helpful to acknowledge that the person may not have had bad intentions while still firmly requesting that the photos be removed. For future events, consider having a conversation with your friend group about photo consent, suggesting that everyone agree to check before posting photos that prominently feature others.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h3 class="resources-title">Additional Resources for Dealing with Online Privacy Violations</h3>
+            <ul class="resources-list">
+                <li><a href="https://www.consumer.ftc.gov/articles/0272-how-keep-your-personal-information-secure" target="_blank">FTC: How to Keep Your Personal Information Secure</a> - Tips for protecting your privacy online</li>
+                <li><a href="https://www.connectsafely.org/privacy/" target="_blank">ConnectSafely: Privacy</a> - Resources for managing online privacy</li>
+                <li><a href="https://www.cybercivilrights.org/" target="_blank">Cyber Civil Rights Initiative</a> - Support for victims of non-consensual intimate image sharing</li>
+                <li><a href="https://staysafeonline.org/stay-safe-online/managing-your-privacy/" target="_blank">Stay Safe Online: Managing Your Privacy</a> - Comprehensive guide to online privacy management</li>
+            </ul>
+        </div>
+        
+        <div class="navigation-buttons">
+            <a href="scenario_misinformation.html" class="nav-button">Previous: Misinformation Scenarios</a>
+            <a href="scenario_scams.html" class="nav-button">Next: Online Scams Scenarios</a>
+        </div>
+    </div>
+</body>
+</html>

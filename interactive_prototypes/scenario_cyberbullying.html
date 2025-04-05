@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberbullying Scenarios - Online Toxicity Education</title>
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --accent-color: #ff6b6b;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .breadcrumbs {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumbs a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+        
+        .intro {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .intro-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .scenario-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .scenario {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .scenario-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+        }
+        
+        .scenario-title {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .scenario-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .scenario-content {
+            padding: 20px;
+        }
+        
+        .scenario-description {
+            margin-bottom: 20px;
+        }
+        
+        .chat-container {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .message-bubble {
+            max-width: 80%;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 18px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .received {
+            background-color: #e5e5ea;
+            align-self: flex-start;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .sent {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+            text-align: right;
+        }
+        
+        .message-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .message-sender {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .message-time {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .message-content {
+            word-break: break-word;
+        }
+        
+        .impact-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .impact-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .response-options {
+            margin-top: 20px;
+        }
+        
+        .response-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .option:hover {
+            background-color: #e5e5ea;
+        }
+        
+        .option.recommended {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .option.not-recommended {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .option-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .expert-tip {
+            background-color: rgba(78, 84, 200, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .expert-tip-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .resources {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .resources-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .resources-list {
+            list-style-type: none;
+        }
+        
+        .resources-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .resources-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .resources-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .resources-list a:hover {
+            text-decoration: underline;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .nav-button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .back-to-home {
+            background-color: #6c757d;
+        }
+        
+        .back-to-home:hover {
+            background-color: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .scenario-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Cyberbullying Scenarios</h1>
+                <p class="subtitle">Understanding, recognizing, and responding to cyberbullying</p>
+            </div>
+        </header>
+        
+        <div class="breadcrumbs">
+            <a href="../index.html">Home</a> &gt; <a href="../index.html#understand-section">Understanding Online Toxicity</a> &gt; Cyberbullying Scenarios
+        </div>
+        
+        <div class="intro">
+            <h2 class="intro-title">What is Cyberbullying?</h2>
+            <p>Cyberbullying is the use of digital communication to bully a person, typically by sending messages of an intimidating or threatening nature. Unlike traditional bullying, cyberbullying can happen 24 hours a day, reach a person even when alone, and quickly reach a wide audience.</p>
+            <p>The following scenarios illustrate common forms of cyberbullying and provide guidance on how to respond effectively.</p>
+        </div>
+        
+        <div class="scenario-container">
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 1: Repeated Negative Comments</h3>
+                    <p class="scenario-subtitle">Social Media Platform</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Emma, 14, posts photos of her artwork on a social media platform. A classmate, Jason, has been leaving negative comments on every post for the past two weeks.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Emma:</span>
+                                <span class="message-time">3:45 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Just finished this painting for art class! 🎨 #ProudOfMyWork</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Jason:</span>
+                                <span class="message-time">3:52 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>This is terrible. You should just give up already. Nobody likes your "art" 🤣</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Emma:</span>
+                                <span class="message-time">4:01 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Here's another angle of the painting with better lighting</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Jason:</span>
+                                <span class="message-time">4:03 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Better lighting won't fix how bad you are at this. Everyone in class is laughing at you</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>This type of repeated negative targeting can lead to:</p>
+                        <ul>
+                            <li>Decreased self-esteem and confidence</li>
+                            <li>Reluctance to share creative work</li>
+                            <li>Anxiety about school and facing peers</li>
+                            <li>Feelings of isolation if others see the comments but don't intervene</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Block and Report</span>
+                                <p>Block Jason to prevent further comments and report the harassment to the platform. Save screenshots as evidence.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Talk to a Trusted Adult</span>
+                                <p>Share what's happening with a parent, teacher, or school counselor who can provide support and potentially intervene.</p>
+                            </div>
+                            
+                            <div class="option not-recommended">
+                                <span class="option-label">Not Recommended: Respond with Anger</span>
+                                <p>Responding with insults or anger might temporarily feel good but typically escalates the situation and provides the reaction the bully is seeking.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Document the bullying by taking screenshots that include timestamps and usernames. This evidence can be important if the situation requires intervention from school administrators or, in severe cases, law enforcement.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 2: Group Chat Exclusion</h3>
+                    <p class="scenario-subtitle">Messaging App</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Miguel, 13, discovers his friends have created a group chat called "Everyone Except Miguel" where they share jokes and make plans without him. Sometimes they screenshot conversations from this group and send them to Miguel to show him what he's missing.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Tyler:</span>
+                                <span class="message-time">5:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Hey Miguel, look what you're missing out on! [Screenshot of group chat planning a weekend hangout]</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Miguel:</span>
+                                <span class="message-time">5:17 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Why didn't you guys invite me?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Tyler:</span>
+                                <span class="message-time">5:18 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>It's just a joke, don't be so sensitive 🙄</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Tyler:</span>
+                                <span class="message-time">5:20 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Everyone in the group thinks it's funny</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>This form of exclusionary bullying can cause:</p>
+                        <ul>
+                            <li>Feelings of rejection and isolation</li>
+                            <li>Damaged self-worth and confidence</li>
+                            <li>Trust issues in future friendships</li>
+                            <li>Anxiety about social situations</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Express Feelings Calmly</span>
+                                <p>Clearly communicate how their actions make you feel: "When you exclude me and then show me what I'm missing, it hurts my feelings and makes me feel isolated."</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Seek New Social Connections</span>
+                                <p>Focus on building friendships with people who value and include you, whether through clubs, activities, or other social groups.</p>
+                            </div>
+                            
+                            <div class="option not-recommended">
+                                <span class="option-label">Not Recommended: Pretending It Doesn't Bother You</span>
+                                <p>Ignoring the problem without addressing it or seeking support can lead to increased feelings of isolation and allow the behavior to continue.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Exclusion is a form of bullying that's sometimes dismissed as "just a joke" or "not that serious." However, intentional and repeated exclusion can be just as harmful as more direct forms of bullying. It's important to recognize this as a legitimate form of cyberbullying that deserves attention and intervention.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 3: Impersonation</h3>
+                    <p class="scenario-subtitle">Social Media Platform</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Aisha, 15, discovers someone has created a fake profile using her name and photo. The account is posting embarrassing and offensive content that makes it look like she is saying inappropriate things.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Jordan:</span>
+                                <span class="message-time">7:32 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Aisha, what's with all those awful posts you're making? I thought you were better than that.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Aisha:</span>
+                                <span class="message-time">7:35 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>What posts? I haven't posted anything today.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Jordan:</span>
+                                <span class="message-time">7:36 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Check your profile. You've been posting all day saying really mean things about people in our class.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Aisha:</span>
+                                <span class="message-time">7:38 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>That's not me! Someone must have created a fake account with my name and photo. Can you send me a link to it?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>This type of impersonation can lead to:</p>
+                        <ul>
+                            <li>Damage to reputation and relationships</li>
+                            <li>Being blamed for things you didn't say or do</li>
+                            <li>Feelings of violation and loss of control</li>
+                            <li>Anxiety about what might be posted next</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Report the Fake Account</span>
+                                <p>Report the impersonation to the platform immediately. Most social media platforms have specific procedures for reporting fake accounts.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Inform Your Network</span>
+                                <p>Post on your real accounts to let friends know about the fake profile and ask them to report it too.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Involve Parents and School</span>
+                                <p>This type of impersonation can quickly escalate and cause significant harm. Involve trusted adults who can help address the situation.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Impersonation is a serious form of cyberbullying that can sometimes violate terms of service and even laws in some jurisdictions. Document everything by taking screenshots of the fake profile and any harmful posts. This documentation will be valuable when reporting to platforms, school officials, or in some cases, law enforcement.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h3 class="resources-title">Additional Resources for Dealing with Cyberbullying</h3>
+            <ul class="resources-list">
+                <li><a href="https://www.stopbullying.gov/" target="_blank">StopBullying.gov</a> - Federal government website with resources for preventing and addressing bullying</li>
+                <li><a href="https://www.cyberbullying.org/" target="_blank">Cyberbullying Research Center</a> - Research-based resources for understanding and preventing cyberbullying</li>
+                <li><a href="https://www.commonsensemedia.org/cyberbullying" target="_blank">Common Sense Media: Cyberbullying</a> - Age-appropriate resources for kids, teens, and parents</li>
+                <li><a href="https://www.pacer.org/bullying/" target="_blank">PACER's National Bullying Prevention Center</a> - Tools and resources for students, parents, and educators</li>
+            </ul>
+        </div>
+        
+        <div class="navigation-buttons">
+            <a href="../index.html" class="nav-button back-to-home">Back to Home</a>
+            <a href="scenario_doxing.html" class="nav-button">Next: Doxing Scenarios</a>
+        </div>
+    </div>
+</body>
+</html>

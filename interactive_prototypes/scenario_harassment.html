@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harassment Scenarios - Online Toxicity Education</title>
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --accent-color: #ff6b6b;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .breadcrumbs {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumbs a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+        
+        .intro {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .intro-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .scenario-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .scenario {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .scenario-header {
+            background-color: #00b4db;
+            color: white;
+            padding: 15px 20px;
+        }
+        
+        .scenario-title {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .scenario-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .scenario-content {
+            padding: 20px;
+        }
+        
+        .scenario-description {
+            margin-bottom: 20px;
+        }
+        
+        .chat-container {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .message-bubble {
+            max-width: 80%;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 18px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .received {
+            background-color: #e5e5ea;
+            align-self: flex-start;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .sent {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+            text-align: right;
+        }
+        
+        .message-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .message-sender {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .message-time {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .message-content {
+            word-break: break-word;
+        }
+        
+        .impact-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .impact-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .response-options {
+            margin-top: 20px;
+        }
+        
+        .response-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .option:hover {
+            background-color: #e5e5ea;
+        }
+        
+        .option.recommended {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .option.not-recommended {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .option-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .expert-tip {
+            background-color: rgba(0, 180, 219, 0.1);
+            border-left: 4px solid #00b4db;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .expert-tip-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #00b4db;
+        }
+        
+        .resources {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .resources-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .resources-list {
+            list-style-type: none;
+        }
+        
+        .resources-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .resources-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .resources-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .resources-list a:hover {
+            text-decoration: underline;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .nav-button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .back-to-home {
+            background-color: #6c757d;
+        }
+        
+        .back-to-home:hover {
+            background-color: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .scenario-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Harassment Scenarios</h1>
+                <p class="subtitle">Understanding, recognizing, and responding to online harassment</p>
+            </div>
+        </header>
+        
+        <div class="breadcrumbs">
+            <a href="../index.html">Home</a> &gt; <a href="../index.html#understand-section">Understanding Online Toxicity</a> &gt; Harassment Scenarios
+        </div>
+        
+        <div class="intro">
+            <h2 class="intro-title">What is Online Harassment?</h2>
+            <p>Online harassment refers to targeted, persistent, and unwanted behavior directed at a specific person with the intent to alarm, annoy, torment, or cause emotional distress. Unlike some other forms of online toxicity, harassment typically involves repeated actions over time rather than isolated incidents.</p>
+            <p>The following scenarios illustrate different forms of online harassment and provide guidance on how to respond effectively.</p>
+        </div>
+        
+        <div class="scenario-container">
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 1: Persistent Unwanted Contact</h3>
+                    <p class="scenario-subtitle">Social Media Platform</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Alex, 16, politely declined a date request from a classmate, Jordan. Since then, Jordan has been sending multiple messages every day across different platforms, creating new accounts when blocked, and commenting on all of Alex's social media posts.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Jordan:</span>
+                                <span class="message-time">Monday, 3:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Hey, why aren't you answering my texts? I just want to talk to you.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Alex:</span>
+                                <span class="message-time">Monday, 3:30 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>I already told you I'm not interested in dating. Please respect my decision.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Jordan:</span>
+                                <span class="message-time">Monday, 3:32 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>We could just be friends. I'll keep trying until you give me a chance.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Jordan:</span>
+                                <span class="message-time">Monday, 5:45 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>I saw you were online but you're ignoring me. Why are you being so mean?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Jordan (new account):</span>
+                                <span class="message-time">Tuesday, 7:20 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>You blocked me? I made a new account just to talk to you. You can't avoid me forever.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>This type of persistent unwanted contact can lead to:</p>
+                        <ul>
+                            <li>Anxiety and stress when using social media or checking messages</li>
+                            <li>Feeling unsafe or constantly monitored</li>
+                            <li>Withdrawal from online platforms to avoid the harasser</li>
+                            <li>Sleep disturbances and difficulty concentrating</li>
+                            <li>Concern about the harassment escalating to in-person contact</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Clear Boundary Setting</span>
+                                <p>Send one clear message stating that the contact is unwanted and must stop. After this, do not respond to further messages as any response can encourage continued contact.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Document Everything</span>
+                                <p>Take screenshots of all unwanted messages, including dates, times, and the platforms they were sent on. This creates a record if you need to escalate the situation.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Involve Trusted Adults</span>
+                                <p>Share what's happening with parents, school counselors, or other trusted adults who can help assess the situation and intervene if necessary.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Persistent unwanted contact that continues after clear requests to stop can constitute harassment and may violate laws in many jurisdictions. Most social media platforms have specific reporting options for harassment that involves creating multiple accounts to circumvent blocks. When reporting, mention that you've already blocked previous accounts and the person keeps creating new ones to contact you.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 2: Coordinated Harassment</h3>
+                    <p class="scenario-subtitle">Online Gaming Community</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Tanya, 15, beat a popular player in an online game tournament. The player then encouraged their followers to target Tanya, resulting in dozens of people sending harassing messages, leaving negative comments on her content, and trying to get her banned from the game.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">PopularGamer:</span>
+                                <span class="message-time">Friday, 8:30 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Just got beaten by this nobody @TanyaGames. She must have been cheating. My followers know what to do... 😈</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Fan1:</span>
+                                <span class="message-time">Friday, 8:35 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>@TanyaGames You're going to regret cheating against PopularGamer. We're reporting your account.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Fan2:</span>
+                                <span class="message-time">Friday, 8:40 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Everyone go to @TanyaGames stream and dislike it! Let's get her banned!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Fan3:</span>
+                                <span class="message-time">Friday, 9:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Found her other social media accounts. Let's make sure she never wants to play again.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Private Message:</span>
+                                <span class="message-time">Friday, 10:20 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>You've received 24 new messages from users you don't follow.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Coordinated harassment campaigns can cause:</p>
+                        <ul>
+                            <li>Overwhelming feelings of being attacked from all sides</li>
+                            <li>Fear of participating in gaming or online communities</li>
+                            <li>Damage to online reputation and social connections</li>
+                            <li>Loss of access to platforms if false reports succeed</li>
+                            <li>Severe emotional distress from the scale of negativity</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Lockdown Social Media Temporarily</span>
+                                <p>Set accounts to private, disable comments, or take a brief break from platforms until the initial wave passes. Most coordinated harassment loses momentum after a few days.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Report Coordinated Behavior</span>
+                                <p>Report to platforms not just individual harassers but the coordination itself, which violates most platforms' terms of service more severely than individual harassment.</p>
+                            </div>
+                            
+                            <div class="option not-recommended">
+                                <span class="option-label">Not Recommended: Public Response</span>
+                                <p>Making public statements addressing the harassment often fuels further targeting and gives harassers the attention and reaction they're seeking.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Coordinated harassment often looks more overwhelming than it actually is. Many times, it's a small number of people creating the impression of a larger mob. Platforms are increasingly recognizing "brigading" (coordinated mass harassment) as a serious violation. When reporting, include screenshots of the original call to action that encouraged others to harass you, as this is strong evidence of coordinated behavior.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 3: Harassment Through Impersonation</h3>
+                    <p class="scenario-subtitle">School Social Network</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>David, 14, discovers someone has created a fake profile using his name and photo on a school social network. The impersonator is sending embarrassing messages to classmates and teachers, pretending to be David, causing damage to his reputation and relationships.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Classmate:</span>
+                                <span class="message-time">Wednesday, 4:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>David, why did you send that weird message to everyone in our math group? Not cool, man.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">David:</span>
+                                <span class="message-time">Wednesday, 4:17 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>What message? I didn't send anything to the math group.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Classmate:</span>
+                                <span class="message-time">Wednesday, 4:20 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Check your account. You sent a message saying you cheated on the test and copied from Sarah.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">David:</span>
+                                <span class="message-time">Wednesday, 4:22 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>That wasn't me! Someone must have created a fake account with my name. Can you send me a screenshot of the message?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Classmate:</span>
+                                <span class="message-time">Wednesday, 4:25 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>[Screenshot showing a profile with David's photo but username "David_Thompson2" sending inappropriate messages]</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Harassment through impersonation can lead to:</p>
+                        <ul>
+                            <li>Damage to reputation and relationships</li>
+                            <li>Being blamed or punished for actions you didn't take</li>
+                            <li>Confusion and distrust among peers and authority figures</li>
+                            <li>Anxiety about what the impersonator might do next</li>
+                            <li>Difficulty proving your innocence</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Immediate Notification</span>
+                                <p>Notify friends, classmates, and teachers about the fake account so they know not to trust messages from it.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Report to Platform and School</span>
+                                <p>Report the impersonation to both the platform and school administrators, providing evidence that the account is not yours.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Verify Your Identity</span>
+                                <p>If possible, post from your verified accounts confirming the other account is fake and asking people to report it.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Impersonation is a particularly harmful form of harassment because it can damage your reputation while simultaneously making it difficult to defend yourself. Most platforms take impersonation very seriously, especially when it involves minors. When reporting, emphasize that the account is pretending to be you without your consent and is sending messages that could harm your reputation or get you in trouble at school.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h3 class="resources-title">Additional Resources for Dealing with Online Harassment</h3>
+            <ul class="resources-list">
+                <li><a href="https://www.stopbullying.gov/cyberbullying/what-is-it" target="_blank">StopBullying.gov: What is Cyberbullying</a> - Information on recognizing and responding to online harassment</li>
+                <li><a href="https://onlineharassmentfieldmanual.pen.org/" target="_blank">Online Harassment Field Manual</a> - Comprehensive guide to dealing with various forms of online harassment</li>
+                <li><a href="https://www.cybercivilrights.org/" target="_blank">Cyber Civil Rights Initiative</a> - Resources for victims of online harassment and abuse</li>
+                <li><a href="https://www.thorn.org/blog/online-harassment-safety-plan/" target="_blank">Thorn: Creating an Online Safety Plan</a> - Guide to creating a personal safety plan for dealing with online harassment</li>
+            </ul>
+        </div>
+        
+        <div class="navigation-buttons">
+            <a href="scenario_hate_speech.html" class="nav-button">Previous: Hate Speech Scenarios</a>
+            <a href="scenario_exclusion.html" class="nav-button">Next: Exclusion Scenarios</a>
+        </div>
+    </div>
+</body>
+</html>

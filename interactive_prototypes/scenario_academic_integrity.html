@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Integrity in Online Learning - Online Toxicity Education</title>
+    <style>
+        :root {
+            --primary-color: #2980b9;
+            --secondary-color: #f8f9fa;
+            --accent-color: #4CAF50;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #1c638e);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        
+        .header p {
+            margin: 0.5rem 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .navigation {
+            background-color: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .navigation a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-right: 0.5rem;
+        }
+        
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .content-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .content-section h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.5rem;
+        }
+        
+        .scenario {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .chat-container {
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            max-width: 500px;
+        }
+        
+        .chat-header {
+            background-color: #f1f3f5;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #e9ecef;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            font-weight: bold;
+        }
+        
+        .chat-messages {
+            padding: 1rem;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message-sender {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .message-content {
+            background-color: #f1f3f5;
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            display: inline-block;
+            max-width: 80%;
+            align-self: flex-start;
+        }
+        
+        .message.sent .message-content {
+            background-color: var(--primary-color);
+            color: white;
+            align-self: flex-end;
+        }
+        
+        .message.sent .message-sender {
+            align-self: flex-end;
+        }
+        
+        .response-option {
+            background-color: white;
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .response-option h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .recommended h3 {
+            color: var(--accent-color);
+        }
+        
+        .recommended h3::before {
+            content: "✓";
+            background-color: var(--accent-color);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .not-recommended h3 {
+            color: #dc3545;
+        }
+        
+        .not-recommended h3::before {
+            content: "✗";
+            background-color: #dc3545;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .impact-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .impact-box h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        .resources {
+            background-color: #e9f7ef;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .resources h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+        }
+        
+        .resources ul {
+            margin-bottom: 0;
+        }
+        
+        .reflection-questions {
+            background-color: #e3f2fd;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .reflection-questions h3 {
+            color: #1976d2;
+            margin-top: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 0.5rem;
+            }
+            
+            .content-section {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Academic Integrity in Online Learning</h1>
+        <p>Understanding, recognizing, and responding to academic dishonesty in Qatar's educational context</p>
+    </div>
+    
+    <div class="navigation">
+        <a href="index.html">Home</a> > <a href="understanding_online_toxicity.html">Understanding Online Toxicity</a> > Academic Integrity in Online Learning
+    </div>
+    
+    <div class="container">
+        <div class="content-section">
+            <h2>What is Academic Integrity in Online Learning?</h2>
+            <p>Academic integrity refers to honesty, trust, fairness, respect, and responsibility in educational settings. In Qatar's educational system, which emphasizes both academic excellence and strong moral values, maintaining academic integrity is particularly important. Online learning environments present unique challenges to academic integrity, as digital tools can make cheating seem easier or less detectable.</p>
+            <p>In Qatar and the GCC region, educational institutions follow strict academic integrity policies that align with both international standards and Islamic values of honesty (sidq) and trustworthiness (amanah). Violations of academic integrity not only have academic consequences but can also conflict with religious and cultural values that emphasize truthfulness and personal honor.</p>
+            <p>The following scenarios illustrate common situations related to academic integrity in online learning environments in Qatar and provide guidance on how to respond effectively while upholding both academic and Islamic values.</p>
+        </div>
+        
+        <div class="content-section">
+            <h2>Scenario 1: Shared Answers in Online Exam Groups</h2>
+            <div class="scenario">
+                <p><strong>Setting:</strong> Final exams at a prestigious school in Doha</p>
+                <p>Youssef, 16, is preparing for his final exams at one of Qatar's top secondary schools. He receives an invitation to join a private WhatsApp group called "Grade 11 Exam Help." When he joins, he discovers that students are planning to share answers during the upcoming online physics exam. Some students are arguing that it's not really cheating since the pandemic has made learning difficult, while others are pressuring everyone to participate, saying "we need to help each other pass."</p>
+                
+                <div class="chat-container">
+                    <div class="chat-header">WhatsApp Group: Grade 11 Exam Help</div>
+                    <div class="chat-messages">
+                        <div class="message">
+                            <div class="message-sender">Khalid</div>
+                            <div class="message-content">Welcome to our exam help group! For tomorrow's physics exam, we'll share answers in real-time. I'll take questions 1-5, Sara will do 6-10, etc. We'll post answers here as we go.</div>
+                        </div>
+                        <div class="message">
+                            <div class="message-sender">Sara</div>
+                            <div class="message-content">This is perfect! Online exams are so stressful, and the teachers made this year extra hard. We deserve some help.</div>
+                        </div>
+                        <div class="message">
+                            <div class="message-sender">Mohammed</div>
+                            <div class="message-content">Everyone needs to participate. If you're in this group, you need to contribute answers too. It's only fair.</div>
+                        </div>
+                        <div class="message sent">
+                            <div class="message-sender">Youssef</div>
+                            <div class="message-content">I'm not comfortable with this. Isn't this considered cheating? Our school has strict policies about academic integrity.</div>
+                        </div>
+                        <div class="message">
+                            <div class="message-sender">Khalid</div>
+                            <div class="message-content">Don't be so serious! Everyone does this. The teachers won't know, and we're just helping each other during difficult times. Are you with us or not?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="impact-box">
+                <h3>Potential Impact</h3>
+                <ul>
+                    <li><strong>Academic Consequences:</strong> In Qatar's educational institutions, academic dishonesty can result in failing grades, academic probation, or even expulsion.</li>
+                    <li><strong>Moral and Religious Implications:</strong> Cheating conflicts with Islamic values of honesty (sidq) and trustworthiness (amanah), which are emphasized in Qatar's educational philosophy.</li>
+                    <li><strong>Future Opportunities:</strong> Academic dishonesty records can affect university admissions, particularly for prestigious institutions in Qatar and abroad.</li>
+                    <li><strong>Personal Development:</strong> Relying on cheating prevents the development of genuine knowledge and skills needed for future success.</li>
+                    <li><strong>Family Honor:</strong> In Qatari society, academic dishonesty can reflect poorly on family reputation, which is highly valued.</li>
+                </ul>
+            </div>
+            
+            <div class="response-option recommended">
+                <h3>Recommended: Decline Participation and Uphold Values</h3>
+                <p>Respectfully decline to participate while explaining your values:</p>
+                <p>"I appreciate the invitation, but I can't participate in sharing exam answers. This goes against both our school's academic integrity policy and my personal values. The Prophet Muhammad ﷺ taught us that honesty is essential in all aspects of life. I'd be happy to join a proper study group where we help each other understand the material before the exam."</p>
+                <p>This response demonstrates moral courage and aligns with both academic and Islamic values of honesty.</p>
+            </div>
+            
+            <div class="response-option recommended">
+                <h3>Recommended: Suggest Ethical Alternatives</h3>
+                <p>Offer constructive alternatives that support learning without compromising integrity:</p>
+                <p>"Instead of sharing answers during the exam, why don't we create a study group to review the material together before the test? I can share some of the practice problems I've been working on, and we can help each other understand difficult concepts. This way, we all learn the material properly and don't risk our academic standing."</p>
+                <p>This approach provides a positive alternative while maintaining integrity.</p>
+            </div>
+            
+            <div class="response-option not-recommended">
+                <h3>Not Recommended: Giving in to Peer Pressure</h3>
+                <p>Participating despite knowing it's wrong:</p>
+                <p>"Okay, I'll help with questions 11-15. Just make sure no one finds out about this group."</p>
+                <p>This response compromises personal integrity and academic honesty for social acceptance, contradicting both school policies and Islamic values.</p>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h2>Scenario 2: Plagiarism in Research Projects</h2>
+            <div class="scenario">
+                <p><strong>Setting:</strong> Group research project at a Qatari high school</p>
+                <p>Noora, 17, is working on a group research project about sustainable development in Qatar for her environmental science class. Her group member, Latifa, shares her contribution—a three-page section that Noora recognizes as being copied directly from a Qatar Foundation research paper she read earlier. Latifa has changed a few words but has not cited the source or used quotation marks. When Noora mentions this, Latifa says, "It's fine, everyone uses online sources. Besides, the information is correct, so what's the problem?"</p>
+                
+                <div class="chat-container">
+                    <div class="chat-header">Group Project Chat</div>
+                    <div class="chat-messages">
+                        <div class="message">
+                            <div class="message-sender">Latifa</div>
+                            <div class="message-content">I've finished my section on Qatar's sustainable development initiatives. I'm attaching it now. [file attached]</div>
+                        </div>
+                        <div class="message sent">
+                            <div class="message-sender">Noora</div>
+                            <div class="message-content">Thanks for your work, but I noticed that this content seems to be copied directly from that Qatar Foundation research paper we looked at. We need to cite our sources and use our own words.</div>
+                        </div>
+                        <div class="message">
+                            <div class="message-sender">Latifa</div>
+                            <div class="message-content">It's not exactly the same—I changed some words. And the information is correct, so what's the problem? Everyone uses online sources for research.</div>
+                        </div>
+                        <div class="message">
+                            <div class="message-sender">Ahmed (Group Member)</div>
+                            <div class="message-content">Our deadline is tomorrow, and we don't have time to rewrite everything. Let's just submit it as is. The teacher probably won't check.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="impact-box">
+                <h3>Potential Impact</h3>
+                <ul>
+                    <li><strong>Academic Penalties:</strong> Qatar's educational institutions have strict plagiarism policies, often using advanced detection software. Penalties can range from failing the assignment to academic suspension.</li>
+                    <li><strong>Group Responsibility:</strong> In many Qatari schools, all group members may be held accountable for plagiarism, even if only one person copied the content.</li>
+                    <li><strong>Learning Loss:</strong> Plagiarism prevents the development of critical research and writing skills that are essential for university success.</li>
+                    <li><strong>Ethical Development:</strong> Accepting plagiarism contradicts Islamic teachings about honesty and giving proper credit to others.</li>
+                    <li><strong>Future Research Integrity:</strong> Developing proper citation habits is crucial for students who may pursue higher education at Qatar's prestigious universities.</li>
+                </ul>
+            </div>
+            
+            <div class="response-option recommended">
+                <h3>Recommended: Explain Plagiarism Concerns Clearly</h3>
+                <p>Educate group members about plagiarism and its consequences:</p>
+                <p>"I understand we're under time pressure, but what you've submitted is plagiarism—using someone else's work without proper citation. Our school uses plagiarism detection software, and this could result in all of us failing the project or worse. More importantly, as students, we should respect others' intellectual work and demonstrate academic integrity."</p>
+                <p>This response educates peers while emphasizing both practical consequences and ethical principles.</p>
+            </div>
+            
+            <div class="response-option recommended">
+                <h3>Recommended: Offer to Help Revise Properly</h3>
+                <p>Provide a constructive solution:</p>
+                <p>"I can help you revise this section to use your own words and properly cite the Qatar Foundation research. We can work on it together tonight. It's better to submit quality work that truly represents our understanding, even if we need to ask the teacher for a short extension."</p>
+                <p>This approach demonstrates leadership and a commitment to both academic integrity and teamwork.</p>
+            </div>
+            
+            <div class="response-option not-recommended">
+                <h3>Not Recommended: Ignoring the Issue</h3>
+                <p>Accepting plagiarism to avoid conflict:</p>
+                <p>"Okay, if you think it's fine, let's just submit it. I don't want to make a big deal about this."</p>
+                <p>This response avoids temporary discomfort but compromises academic integrity and potentially subjects the entire group to serious consequences.</p>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h2>Qatar-Specific Resources</h2>
+            <div class="resources">
+                <h3>Academic Integrity Support</h3>
+                <ul>
+                    <li><strong>Qatar National Library</strong> - Offers workshops on research ethics and citation: <a href="https://www.qnl.qa/en" target="_blank">www.qnl.qa</a></li>
+                    <li><strong>Qatar University Academic Integrity Resources</strong> - Guidelines and tutorials on proper citation and research practices: <a href="https://www.qu.edu.qa" target="_blank">www.qu.edu.qa</a></li>
+                    <li><strong>Ministry of Education and Higher Education (Qatar)</strong> - Academic integrity policies and resources: <a href="https://www.edu.gov.qa/en" target="_blank">www.edu.gov.qa</a></li>
+                    <li><strong>Qatar Foundation Academic Integrity Office</strong> - Resources for students in QF schools and universities</li>
+                    <li><strong>Hamad Bin Khalifa University Writing Center</strong> - Assistance with proper citation and academic writing</li>
+                </ul>
+            </div>
+            
+            <div class="reflection-questions">
+                <h3>Reflection Questions</h3>
+                <ol>
+                    <li>How does maintaining academic integrity align with Islamic values of honesty and trustworthiness?</li>
+                    <li>What are the long-term consequences of academic dishonesty for your education and career goals in Qatar?</li>
+                    <li>How can you respond to peer pressure to cheat while maintaining your principles?</li>
+                    <li>What strategies can you use to manage your time effectively so you're not tempted to take shortcuts in your academic work?</li>
+                    <li>How would you explain the importance of academic integrity to a younger student in a way that connects to Qatari values and traditions?</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

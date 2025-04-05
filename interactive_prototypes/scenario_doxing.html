@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doxing Scenarios - Online Toxicity Education</title>
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --accent-color: #ff6b6b;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .breadcrumbs {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumbs a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+        
+        .intro {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .intro-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .scenario-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .scenario {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .scenario-header {
+            background-color: #11998e;
+            color: white;
+            padding: 15px 20px;
+        }
+        
+        .scenario-title {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .scenario-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .scenario-content {
+            padding: 20px;
+        }
+        
+        .scenario-description {
+            margin-bottom: 20px;
+        }
+        
+        .chat-container {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .message-bubble {
+            max-width: 80%;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 18px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .received {
+            background-color: #e5e5ea;
+            align-self: flex-start;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .sent {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+            text-align: right;
+        }
+        
+        .message-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .message-sender {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .message-time {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .message-content {
+            word-break: break-word;
+        }
+        
+        .impact-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .impact-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .response-options {
+            margin-top: 20px;
+        }
+        
+        .response-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .option:hover {
+            background-color: #e5e5ea;
+        }
+        
+        .option.recommended {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .option.not-recommended {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .option-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .expert-tip {
+            background-color: rgba(17, 153, 142, 0.1);
+            border-left: 4px solid #11998e;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .expert-tip-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #11998e;
+        }
+        
+        .resources {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .resources-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .resources-list {
+            list-style-type: none;
+        }
+        
+        .resources-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .resources-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .resources-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .resources-list a:hover {
+            text-decoration: underline;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .nav-button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .back-to-home {
+            background-color: #6c757d;
+        }
+        
+        .back-to-home:hover {
+            background-color: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .scenario-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Doxing Scenarios</h1>
+                <p class="subtitle">Understanding, recognizing, and responding to doxing</p>
+            </div>
+        </header>
+        
+        <div class="breadcrumbs">
+            <a href="../index.html">Home</a> &gt; <a href="../index.html#understand-section">Understanding Online Toxicity</a> &gt; Doxing Scenarios
+        </div>
+        
+        <div class="intro">
+            <h2 class="intro-title">What is Doxing?</h2>
+            <p>Doxing (sometimes spelled "doxxing") is the act of publicly revealing previously private personal information about an individual or organization, usually through the internet. This information may include real name, home address, phone number, email address, workplace, family members' information, and more.</p>
+            <p>Doxing is particularly harmful because it can bridge the gap between online harassment and real-world danger. The following scenarios illustrate different forms of doxing and provide guidance on how to respond effectively.</p>
+        </div>
+        
+        <div class="scenario-container">
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 1: Gaming Dispute Escalation</h3>
+                    <p class="scenario-subtitle">Online Gaming Platform</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Ethan, 16, defeats another player in an online competitive game. The player becomes angry and threatens to "find" Ethan. Later, Ethan discovers the player has posted his real name, school, and city in the game's public chat.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Game Chat:</span>
+                                <span class="message-time">8:45 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p><strong>Ethan (GamerX92):</strong> Good game!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Game Chat:</span>
+                                <span class="message-time">8:46 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p><strong>DestroyerZ:</strong> You cheated. Nobody beats me like that without hacks.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Game Chat:</span>
+                                <span class="message-time">8:47 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p><strong>Ethan (GamerX92):</strong> No cheats, just practice. Want to play again?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Game Chat:</span>
+                                <span class="message-time">8:48 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p><strong>DestroyerZ:</strong> I'm going to find you. I know how to get people's info.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Game Chat:</span>
+                                <span class="message-time">9:12 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p><strong>DestroyerZ:</strong> Hey everyone, GamerX92 is Ethan Thompson from Lincoln High School in Portland. Let's all report this cheater.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>This type of doxing can lead to:</p>
+                        <ul>
+                            <li>Fear for physical safety when strangers know your location</li>
+                            <li>Harassment extending to real-life settings like school</li>
+                            <li>Loss of privacy and sense of security</li>
+                            <li>Anxiety about playing games or participating in online activities</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Report to Platform Immediately</span>
+                                <p>Most gaming platforms have strict policies against doxing. Report the user and include screenshots of the messages containing your personal information.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Inform Parents/Guardians</span>
+                                <p>This situation involves potential safety concerns and should be shared with trusted adults who can help assess the risk and take appropriate action.</p>
+                            </div>
+                            
+                            <div class="option not-recommended">
+                                <span class="option-label">Not Recommended: Retaliating with Counter-Doxing</span>
+                                <p>Attempting to find and share the other person's information escalates the situation, may be illegal, and puts you at risk of account bans or other consequences.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Review your online presence to see what information might be publicly available. Sometimes doxers compile information from multiple sources like social media profiles, forum posts, and usernames that are used across different platforms. Consider using different usernames for different services and checking privacy settings on all your accounts.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 2: Social Media Disagreement</h3>
+                    <p class="scenario-subtitle">Public Forum</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Zoe, 17, posts a comment expressing her opinion on a controversial topic in a public forum. A group of users who disagree with her view begin digging into her online presence and compile a post containing her full name, parents' names, home address, and phone number.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Forum Thread:</span>
+                                <span class="message-time">3:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p><strong>Zoe (@ZoeThinks):</strong> I think we need to consider both sides of this issue before jumping to conclusions...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Forum Thread:</span>
+                                <span class="message-time">3:22 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p><strong>@TruthTeller45:</strong> @ZoeThinks People like you are the problem. There are no "both sides" to this.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Forum Thread:</span>
+                                <span class="message-time">3:45 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p><strong>@NoCompromise:</strong> I found her Instagram. Her real name is Zoe Martinez. Let's see what else we can find.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Private Message:</span>
+                                <span class="message-time">4:30 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p><strong>Anonymous User:</strong> We know where you live, Zoe. 1234 Oak Street. Maybe we should let your parents Robert and Maria know what you're saying online. Their number is (555) 123-4567, right?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>This coordinated doxing can cause:</p>
+                        <ul>
+                            <li>Immediate safety concerns for the individual and their family</li>
+                            <li>Fear of stalking or physical confrontation</li>
+                            <li>Harassment extending to family members</li>
+                            <li>Silencing effect on future expression of opinions</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Document Everything</span>
+                                <p>Take screenshots of all posts containing your personal information, including usernames, dates, and times.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Report to Platform and Consider Law Enforcement</span>
+                                <p>Report the doxing to the platform. In cases where there are explicit or implied threats, consider reporting to local law enforcement as well.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Enhance Security Measures</span>
+                                <p>Change passwords, enable two-factor authentication on accounts, and consider temporarily making social media accounts private.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Doxing that includes home addresses and contact information of minors is taken very seriously by most platforms and may violate laws in many jurisdictions. Don't hesitate to involve parents, school officials, and if necessary, law enforcement when this type of information is shared with malicious intent.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 3: Unintentional Self-Doxing</h3>
+                    <p class="scenario-subtitle">Social Media Platform</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Noah, 14, regularly posts about his daily life on social media. Without realizing it, his posts over time have revealed his full name, school, home address (through location tags and photos), sports schedule, and family members' information. A stranger uses this information to create a detailed profile about Noah.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Noah's Social Media:</span>
+                                <span class="message-time">Monday, 3:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>First day back at Jefferson Middle School! 8th grade is going to be awesome! [Photo of school entrance]</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Noah's Social Media:</span>
+                                <span class="message-time">Wednesday, 5:30 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Soccer practice was intense today! Coach Williams is getting us ready for Saturday's game against Westside. [Location tagged: Memorial Park Fields]</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Noah's Social Media:</span>
+                                <span class="message-time">Friday, 7:45 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Movie night with the family! [Photo showing family members with caption tagging "Mom", "Dad", and "Sister Lily"]</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Noah's Social Media:</span>
+                                <span class="message-time">Saturday, 10:20 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Just got my new gaming setup! [Photo showing bedroom with house number visible through window]</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Unintentional self-doxing can lead to:</p>
+                        <ul>
+                            <li>Vulnerability to stalking or predatory behavior</li>
+                            <li>Identity theft risks</li>
+                            <li>Targeted harassment or scams</li>
+                            <li>Privacy violations affecting the entire family</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Audit and Clean Up Social Media</span>
+                                <p>Review and remove posts that reveal personal information. Turn off location tagging and be more selective about what you share going forward.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Update Privacy Settings</span>
+                                <p>Set accounts to private and review friend/follower lists to ensure you know who has access to your information.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Create a Family Social Media Plan</span>
+                                <p>Discuss with family members what information is safe to share online and what should remain private.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Information mosaic is a technique where seemingly harmless pieces of information shared over time can be compiled to create a detailed profile. Before posting, ask yourself: "What could someone learn about me if they saw all my posts together?" Be especially careful about sharing routine locations (school, practice schedules), home details, and family information.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h3 class="resources-title">Additional Resources for Dealing with Doxing</h3>
+            <ul class="resources-list">
+                <li><a href="https://www.connectsafely.org/doxing/" target="_blank">ConnectSafely: Doxing Guide</a> - Information on preventing and responding to doxing</li>
+                <li><a href="https://www.consumer.ftc.gov/articles/how-recognize-and-avoid-phishing-scams" target="_blank">FTC: Recognizing and Avoiding Phishing Scams</a> - Guidance on protecting personal information</li>
+                <li><a href="https://www.cybercivilrights.org/" target="_blank">Cyber Civil Rights Initiative</a> - Resources for victims of online privacy violations</li>
+                <li><a href="https://www.getsafeonline.org/" target="_blank">Get Safe Online</a> - Comprehensive advice on protecting personal information</li>
+            </ul>
+        </div>
+        
+        <div class="navigation-buttons">
+            <a href="scenario_cyberbullying.html" class="nav-button">Previous: Cyberbullying Scenarios</a>
+            <a href="scenario_trolling.html" class="nav-button">Next: Trolling Scenarios</a>
+        </div>
+    </div>
+</body>
+</html>

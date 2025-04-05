@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Settings Simulator</title>
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --accent-color: #ff6b6b;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        .platform-selector {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .platform-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            width: 120px;
+        }
+        
+        .platform-btn:hover {
+            transform: translateY(-5px);
+        }
+        
+        .platform-btn.active {
+            border-color: var(--primary-color);
+            background-color: rgba(78, 84, 200, 0.05);
+        }
+        
+        .platform-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .platform-name {
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .simulator-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .settings-panel {
+            flex: 1;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            max-width: 600px;
+        }
+        
+        .settings-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .settings-title {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-left: 10px;
+        }
+        
+        .settings-section {
+            margin-bottom: 25px;
+        }
+        
+        .settings-section-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            font-weight: bold;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .setting-info {
+            flex: 1;
+        }
+        
+        .setting-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .setting-description {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--success-color);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .dropdown-select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: white;
+            min-width: 150px;
+        }
+        
+        .preview-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .security-meter {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .meter-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .meter-container {
+            width: 100%;
+            height: 30px;
+            background-color: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--danger-color) 0%, var(--warning-color) 50%, var(--success-color) 100%);
+            width: 20%;
+            transition: width 1s ease-in-out;
+        }
+        
+        .meter-label {
+            text-align: center;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        
+        .preview-box {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            padding: 20px;
+            flex: 1;
+        }
+        
+        .preview-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .preview-content {
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .preview-before-after {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .preview-column {
+            flex: 1;
+        }
+        
+        .preview-column-title {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .preview-image {
+            width: 100%;
+            height: 200px;
+            background-color: #ddd;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        
+        .preview-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-description {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .reset-btn {
+            background-color: #e5e5ea;
+            color: var(--text-color);
+        }
+        
+        .reset-btn:hover {
+            background-color: #d5d5da;
+        }
+        
+        .save-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .save-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .badge-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            padding: 15px;
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            transform: translateX(350px);
+            transition: transform var(--transition-speed);
+            z-index: 100;
+        }
+        
+        .badge-container.active {
+            transform: translateX(0);
+        }
+        
+        .badge-toggle {
+            position: absolute;
+            left: -40px;
+            top: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+        
+        .badge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .badge-title {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .badge-item {
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            opacity: 0.5;
+            transition: all var(--transition-speed);
+        }
+        
+        .badge-item.earned {
+            opacity: 1;
+            border: 2px solid var(--success-color);
+        }
+        
+        .badge-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        .badge-name {
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .success-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background-color: var(--success-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform var(--transition-speed);
+            z-index: 200;
+            text-align: center;
+        }
+        
+        .success-message.active {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        @media (max-width: 992px) {
+            .simulator-container {
+                flex-direction: column;
+            }
+            
+            .settings-panel, .preview-panel {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .platform-btn {
+                width: 100px;
+            }
+            
+            .preview-before-after {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Safety Settings Simulator</h1>
+            <p class="subtitle">Learn how to configure privacy and safety settings on popular platforms</p>
+        </header>
+        
+        <div class="platform-selector">
+            <div class="platform-btn" data-platform="facebook">
+                <div class="platform-icon">👤</div>
+                <div class="platform-name">Facebook</div>
+            </div>
+            <div class="platform-btn" data-platform="instagram">
+                <div class="platform-icon">📸</div>
+                <div class="platform-name">Instagram</div>
+            </div>
+            <div class="platform-btn" data-platform="tiktok">
+                <div class="platform-icon">🎵</div>
+                <div class="platform-name">TikTok</div>
+            </div>
+            <div class="platform-btn" data-platform="snapchat">
+                <div class="platform-icon">👻</div>
+                <div class="platform-name">Snapchat</div>
+            </div>
+            <div class="platform-btn" data-platform="twitter">
+                <div class="platform-icon">🐦</div>
+                <div class="platform-name">Twitter/X</div>
+            </div>
+            <div class="platform-btn" data-platform="whatsapp">
+                <div class="platform-icon">📱</div>
+                <div class="platform-name">WhatsApp</div>
+            </div>
+            <div class="platform-btn" data-platform="telegram">
+                <div class="platform-icon">✈️</div>
+                <div class="platform-name">Telegram</div>
+            </div>
+            <div class="platform-btn" data-platform="discord">
+                <div class="platform-icon">💬</div>
+                <div class="platform-name">Discord</div>
+            </div>
+            <div class="platform-btn" data-platform="twitch">
+                <div class="platform-icon">🎮</div>
+                <div class="platform-name">Twitch</div>
+            </div>
+        </div>
+        
+        <div class="simulator-container">
+            <!-- Facebook Settings Panel -->
+            <div class="settings-panel" id="facebook-panel" style="display: none;">
+                <div class="settings-header">
+                    <div class="platform-icon">👤</div>
+                    <div class="settings-title">Facebook Privacy & Security Settings</div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Account Privacy</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Profile Privacy</div>
+                            <div class="setting-description">Control who can see your profile information</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="profile-privacy" data-value-public="0" data-value-friends="15" data-value-onlyme="25">
+                            <option value="public">Public</option>
+                            <option value="friends">Friends only</option>
+                            <option value="onlyme">Only me</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Friend Requests</div>
+                            <div class="setting-description">Control who can send you friend requests</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="friend-requests" data-value-everyone="0" data-value-friends="15">
+                            <option value="everyone">Everyone</option>
+                            <option value="friends">Friends of friends</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Content Visibility</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Post Privacy</div>
+                            <div class="setting-description">Default audience for your posts</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="post-privacy" data-value-public="0" data-value-friends="15" data-value-custom="20">
+                            <option value="public">Public</option>
+                            <option value="friends">Friends</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Tag Review</div>
+                            <div class="setting-description">Review tags people add to your content</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="tag-review" data-value="15">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Face Recognition</div>
+                            <div class="setting-description">Control whether Facebook can recognize you in photos</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="face-recognition" data-value="10" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Security</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Two-Factor Authentication</div>
+                            <div class="setting-description">Add an extra layer of security to your account</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="two-factor" data-value="20">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Login Alerts</div>
+                            <div class="setting-description">Get notified about unrecognized logins</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="login-alerts" data-value="15">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Instagram Settings Panel -->
+            <div class="settings-panel" id="instagram-panel">
+                <div class="settings-header">
+                    <div class="platform-icon">📸</div>
+                    <div class="settings-title">Instagram Privacy & Security Settings</div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Account Privacy</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Private Account</div>
+                            <div class="setting-description">Only approved followers can see your content</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="private-account" data-value="20">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Close Friends List</div>
+                            <div class="setting-description">Create a list for sharing content with select people</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="close-friends" data-value="10">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Interactions</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Comment Controls</div>
+                            <div class="setting-description">Control who can comment on your posts</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="comment-control" data-value-everyone="0" data-value-followers="10" data-value-following="15">
+                            <option value="everyone">Everyone</option>
+                            <option value="followers">Followers only</option>
+                            <option value="following">People you follow</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Hide Offensive Comments</div>
+                            <div class="setting-description">Automatically filter out potentially offensive comments</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="hide-offensive" data-value="15">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Message Requests</div>
+                            <div class="setting-description">Control who can send you message requests</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="message-requests" data-value-everyone="0" data-value-followers="15">
+                            <option value="everyone">Everyone</option>
+                            <option value="followers">Followers only</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Content Visibility</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Activity Status</div>
+                            <div class="setting-description">Show when you're active on Instagram</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="activity-status" data-value="5" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Story Sharing</div>
+                            <div class="setting-description">Allow others to share your stories</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="story-sharing" data-value="5" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Tag Controls</div>
+                            <div class="setting-description">Review tags before they appear on your profile</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="tag-control" data-value="10">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- TikTok Settings Panel -->
+            <div class="settings-panel" id="tiktok-panel" style="display: none;">
+                <div class="settings-header">
+                    <div class="platform-icon">🎵</div>
+                    <div class="settings-title">TikTok Privacy & Security Settings</div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Account Privacy</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Private Account</div>
+                            <div class="setting-description">Only approved followers can see your videos</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="tiktok-private" data-value="20">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Suggest Your Account to Others</div>
+                            <div class="setting-description">Allow TikTok to recommend your account to others</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="tiktok-suggest" data-value="5" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Interactions</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Comments</div>
+                            <div class="setting-description">Control who can comment on your videos</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="tiktok-comments" data-value-everyone="0" data-value-friends="10" data-value-nobody="20">
+                            <option value="everyone">Everyone</option>
+                            <option value="friends">Friends only</option>
+                            <option value="nobody">No one</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Duet & Stitch</div>
+                            <div class="setting-description">Control who can use your videos in Duets and Stitches</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="tiktok-duet" data-value-everyone="0" data-value-friends="10" data-value-nobody="15">
+                            <option value="everyone">Everyone</option>
+                            <option value="friends">Friends only</option>
+                            <option value="nobody">No one</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Direct Messages</div>
+                            <div class="setting-description">Control who can send you direct messages</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="tiktok-dm" data-value-everyone="0" data-value-friends="15" data-value-nobody="20">
+                            <option value="everyone">Everyone</option>
+                            <option value="friends">Friends only</option>
+                            <option value="nobody">No one</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Safety</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Restricted Mode</div>
+                            <div class="setting-description">Limit the appearance of content that may not be appropriate</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="tiktok-restricted" data-value="15">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Download Videos</div>
+                            <div class="setting-description">Allow others to download your videos</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="tiktok-download" data-value="10" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Snapchat Settings Panel -->
+            <div class="settings-panel" id="snapchat-panel" style="display: none;">
+                <div class="settings-header">
+                    <div class="platform-icon">👻</div>
+                    <div class="settings-title">Snapchat Privacy & Security Settings</div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Contact Controls</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Contact Me</div>
+                            <div class="setting-description">Control who can send you Snaps and Chats</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="snap-contact" data-value-everyone="0" data-value-friends="15">
+                            <option value="everyone">Everyone</option>
+                            <option value="friends">Friends only</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">View My Story</div>
+                            <div class="setting-description">Control who can view your Story</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="snap-story" data-value-everyone="0" data-value-friends="15" data-value-custom="20">
+                            <option value="everyone">Everyone</option>
+                            <option value="friends">Friends only</option>
+                            <option value="custom">Custom</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Additional Features</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">See Me in Quick Add</div>
+                            <div class="setting-description">Allow your profile to appear in Quick Add suggestions</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="snap-quickadd" data-value="5" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">See Me in Snap Map</div>
+                            <div class="setting-description">Control who can see your location on the Snap Map</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="snap-map" data-value-everyone="0" data-value-friends="10" data-value-ghostmode="20">
+                            <option value="everyone">All Friends</option>
+                            <option value="friends">Select Friends</option>
+                            <option value="ghostmode">Ghost Mode (No One)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Two-Factor Authentication</div>
+                            <div class="setting-description">Add an extra layer of security to your account</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="snap-2fa" data-value="20">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Twitter/X Settings Panel -->
+            <div class="settings-panel" id="twitter-panel" style="display: none;">
+                <div class="settings-header">
+                    <div class="platform-icon">🐦</div>
+                    <div class="settings-title">Twitter/X Privacy & Security Settings</div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Tweet Privacy</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Protect Your Tweets</div>
+                            <div class="setting-description">Only approved followers can see your Tweets</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="twitter-protect" data-value="20">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Photo Tagging</div>
+                            <div class="setting-description">Control who can tag you in photos</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="twitter-tag" data-value-anyone="0" data-value-following="10" data-value-off="15">
+                            <option value="anyone">Anyone can tag you</option>
+                            <option value="following">Only people you follow</option>
+                            <option value="off">Off</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Direct Messages</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Message Requests</div>
+                            <div class="setting-description">Allow message requests from people you don't follow</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="twitter-dm" data-value="15" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Quality Filter</div>
+                            <div class="setting-description">Filter low-quality messages from your notifications</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="twitter-filter" data-value="10">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Security</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Two-Factor Authentication</div>
+                            <div class="setting-description">Add an extra layer of security to your account</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="twitter-2fa" data-value="20">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Display Location</div>
+                            <div class="setting-description">Add location information to your Tweets</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="twitter-location" data-value="5" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- WhatsApp Settings Panel -->
+            <div class="settings-panel" id="whatsapp-panel" style="display: none;">
+                <div class="settings-header">
+                    <div class="platform-icon">📱</div>
+                    <div class="settings-title">WhatsApp Privacy & Security Settings</div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Privacy Controls</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Last Seen</div>
+                            <div class="setting-description">Control who can see when you were last online</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="wa-lastseen" data-value-everyone="0" data-value-contacts="10" data-value-nobody="20">
+                            <option value="everyone">Everyone</option>
+                            <option value="contacts">My contacts</option>
+                            <option value="nobody">Nobody</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Profile Photo</div>
+                            <div class="setting-description">Control who can see your profile photo</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="wa-photo" data-value-everyone="0" data-value-contacts="10" data-value-nobody="15">
+                            <option value="everyone">Everyone</option>
+                            <option value="contacts">My contacts</option>
+                            <option value="nobody">Nobody</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">About</div>
+                            <div class="setting-description">Control who can see your about info</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="wa-about" data-value-everyone="0" data-value-contacts="10" data-value-nobody="15">
+                            <option value="everyone">Everyone</option>
+                            <option value="contacts">My contacts</option>
+                            <option value="nobody">Nobody</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Groups & Status</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Groups</div>
+                            <div class="setting-description">Control who can add you to groups</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="wa-groups" data-value-everyone="0" data-value-contacts="15" data-value-select="20">
+                            <option value="everyone">Everyone</option>
+                            <option value="contacts">My contacts</option>
+                            <option value="select">My contacts except...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Status</div>
+                            <div class="setting-description">Control who can see your status updates</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="wa-status" data-value-contacts="10" data-value-select="15" data-value-hide="20">
+                            <option value="contacts">My contacts</option>
+                            <option value="select">My contacts except...</option>
+                            <option value="hide">Only share with...</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Security</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Two-Step Verification</div>
+                            <div class="setting-description">Add a PIN for additional security</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="wa-2step" data-value="20">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Read Receipts</div>
+                            <div class="setting-description">Let others know when you've read their messages</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="wa-read" data-value="5" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Telegram Settings Panel -->
+            <div class="settings-panel" id="telegram-panel" style="display: none;">
+                <div class="settings-header">
+                    <div class="platform-icon">✈️</div>
+                    <div class="settings-title">Telegram Privacy & Security Settings</div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Privacy Controls</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Phone Number</div>
+                            <div class="setting-description">Control who can see your phone number</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="tg-phone" data-value-everybody="0" data-value-contacts="15" data-value-nobody="20">
+                            <option value="everybody">Everybody</option>
+                            <option value="contacts">My Contacts</option>
+                            <option value="nobody">Nobody</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Last Seen & Online</div>
+                            <div class="setting-description">Control who can see your last seen time</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="tg-lastseen" data-value-everybody="0" data-value-contacts="10" data-value-nobody="20">
+                            <option value="everybody">Everybody</option>
+                            <option value="contacts">My Contacts</option>
+                            <option value="nobody">Nobody</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Profile Photos</div>
+                            <div class="setting-description">Control who can see your profile photos</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="tg-photos" data-value-everybody="0" data-value-contacts="10" data-value-nobody="15">
+                            <option value="everybody">Everybody</option>
+                            <option value="contacts">My Contacts</option>
+                            <option value="nobody">Nobody</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Messages & Groups</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Forwarded Messages</div>
+                            <div class="setting-description">Control who can link your account when forwarding your messages</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="tg-forward" data-value-everybody="0" data-value-contacts="15" data-value-nobody="20">
+                            <option value="everybody">Everybody</option>
+                            <option value="contacts">My Contacts</option>
+                            <option value="nobody">Nobody</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Groups & Channels</div>
+                            <div class="setting-description">Control who can add you to groups and channels</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="tg-groups" data-value-everybody="0" data-value-contacts="15" data-value-nobody="20">
+                            <option value="everybody">Everybody</option>
+                            <option value="contacts">My Contacts</option>
+                            <option value="nobody">Nobody</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Security</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Two-Step Verification</div>
+                            <div class="setting-description">Set up additional password for more security</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="tg-2step" data-value="20">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Active Sessions</div>
+                            <div class="setting-description">Regularly review and terminate unknown sessions</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="tg-sessions" data-value="15">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Discord Settings Panel -->
+            <div class="settings-panel" id="discord-panel" style="display: none;">
+                <div class="settings-header">
+                    <div class="platform-icon">💬</div>
+                    <div class="settings-title">Discord Privacy & Security Settings</div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Privacy Controls</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Who Can Add You As A Friend</div>
+                            <div class="setting-description">Control who can send you friend requests</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="discord-friend" data-value-everyone="0" data-value-friends="10" data-value-server="15" data-value-none="20">
+                            <option value="everyone">Everyone</option>
+                            <option value="friends">Friends of Friends</option>
+                            <option value="server">Server Members</option>
+                            <option value="none">No One</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Direct Messages</div>
+                            <div class="setting-description">Allow direct messages from server members</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="discord-dm" data-value="15" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Server Privacy</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Server Privacy Defaults</div>
+                            <div class="setting-description">Automatically use privacy settings for all servers</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="discord-defaults" data-value="10">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Allow Direct Messages</div>
+                            <div class="setting-description">Allow direct messages from server members</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="discord-server-dm" data-value="15" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Security</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Two-Factor Authentication</div>
+                            <div class="setting-description">Add an extra layer of security to your account</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="discord-2fa" data-value="20">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Safe Direct Messaging</div>
+                            <div class="setting-description">Scan and delete direct messages with explicit content</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="discord-safe" data-value-off="0" data-value-friends="10" data-value-everyone="20">
+                            <option value="off">Don't scan</option>
+                            <option value="friends">Scan from non-friends</option>
+                            <option value="everyone">Scan from everyone</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Twitch Settings Panel -->
+            <div class="settings-panel" id="twitch-panel" style="display: none;">
+                <div class="settings-header">
+                    <div class="platform-icon">🎮</div>
+                    <div class="settings-title">Twitch Privacy & Security Settings</div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Privacy Controls</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Block Whispers</div>
+                            <div class="setting-description">Block whispers (direct messages) from strangers</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="twitch-whispers" data-value="15">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Hide Personal Information</div>
+                            <div class="setting-description">Hide your email and phone number from your account</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="twitch-info" data-value="20">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Chat Controls</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Block Links in Chat</div>
+                            <div class="setting-description">Prevent viewers from posting links in your chat</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="twitch-links" data-value="10">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Followers-Only Mode</div>
+                            <div class="setting-description">Only allow followers to chat in your channel</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="twitch-followers" data-value-off="0" data-value-immediate="5" data-value-10min="10" data-value-1week="15">
+                            <option value="off">Off</option>
+                            <option value="immediate">Immediate</option>
+                            <option value="10min">10 Minutes</option>
+                            <option value="1week">1 Week</option>
+                        </select>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Subscriber-Only Mode</div>
+                            <div class="setting-description">Only allow subscribers to chat in your channel</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="twitch-subscribers" data-value="15">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Security</h3>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">Two-Factor Authentication</div>
+                            <div class="setting-description">Add an extra layer of security to your account</div>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" class="setting-toggle" data-setting="twitch-2fa" data-value="20">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <div class="setting-info">
+                            <div class="setting-name">AutoMod Level</div>
+                            <div class="setting-description">Automatically filter potentially inappropriate chat messages</div>
+                        </div>
+                        <select class="dropdown-select setting-dropdown" data-setting="twitch-automod" data-value-disabled="0" data-value-low="5" data-value-medium="10" data-value-high="15">
+                            <option value="disabled">Disabled</option>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="preview-panel">
+                <div class="security-meter">
+                    <h3 class="meter-title">Your Privacy & Security Level</h3>
+                    <div class="meter-container">
+                        <div class="meter-fill" id="security-meter-fill"></div>
+                    </div>
+                    <div class="meter-label" id="security-meter-label">Basic (20%)</div>
+                </div>
+                
+                <div class="preview-box">
+                    <h3 class="preview-title">See the Difference</h3>
+                    
+                    <div class="preview-before-after">
+                        <div class="preview-column">
+                            <div class="preview-column-title">Before: Low Privacy</div>
+                            <div class="preview-image">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjVmNWY1Ii8+CiAgPHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjQwIiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSIjZGRkIiBzdHJva2Utd2lkdGg9IjEiLz4KICA8Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIxMCIgZmlsbD0iIzk5OSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIiBkeT0iLjNlbSI+VXNlcm5hbWU8L3RleHQ+CiAgPHRleHQgeD0iMzYwIiB5PSIzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIiBkeT0iLjNlbSIgdGV4dC1hbmNob3I9ImVuZCI+UHVibGljPC90ZXh0PgogIDxyZWN0IHg9IjEwIiB5PSI2MCIgd2lkdGg9IjM4MCIgaGVpZ2h0PSIxMzAiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNkZGQiIHN0cm9rZS13aWR0aD0iMSIvPgogIDx0ZXh0IHg9IjIwIiB5PSI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIj5QZXJzb25hbCBJbmZvcm1hdGlvbiBWaXNpYmxlOjwvdGV4dD4KICA8dGV4dCB4PSIzMCIgeT0iMTEwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiMzMzMiPi0gRnVsbCBuYW1lPC90ZXh0PgogIDx0ZXh0IHg9IjMwIiB5PSIxMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzMzMyI+LSBQaG9uZSBudW1iZXI8L3RleHQ+CiAgPHRleHQgeD0iMzAiIHk9IjE1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIj4tIEVtYWlsIGFkZHJlc3M8L3RleHQ+CiAgPHRleHQgeD0iMzAiIHk9IjE3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIj4tIExvY2F0aW9uIGRhdGE8L3RleHQ+Cjwvc3ZnPg==" alt="Low privacy profile">
+                            </div>
+                            <div class="preview-description">
+                                <p>With low privacy settings:</p>
+                                <ul>
+                                    <li>Anyone can see your posts and stories</li>
+                                    <li>Anyone can send you messages</li>
+                                    <li>Anyone can comment on your content</li>
+                                    <li>Personal information is more visible</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="preview-column">
+                            <div class="preview-column-title">After: High Privacy</div>
+                            <div class="preview-image">
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjVmNWY1Ii8+CiAgPHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMzgwIiBoZWlnaHQ9IjQwIiBmaWxsPSJ3aGl0ZSIgc3Ryb2tlPSIjZGRkIiBzdHJva2Utd2lkdGg9IjEiLz4KICA8Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIxMCIgZmlsbD0iIzk5OSIvPgogIDx0ZXh0IHg9IjUwIiB5PSIzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIiBkeT0iLjNlbSI+VXNlcm5hbWU8L3RleHQ+CiAgPHRleHQgeD0iMzYwIiB5PSIzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIiBkeT0iLjNlbSIgdGV4dC1hbmNob3I9ImVuZCI+UHJpdmF0ZSDwn5amPC90ZXh0PgogIDxyZWN0IHg9IjEwIiB5PSI2MCIgd2lkdGg9IjM4MCIgaGVpZ2h0PSIxMzAiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNkZGQiIHN0cm9rZS13aWR0aD0iMSIvPgogIDx0ZXh0IHg9IjIwIiB5PSI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIj5Qcml2YWN5IFByb3RlY3Rpb25zIEVuYWJsZWQ6PC90ZXh0PgogIDx0ZXh0IHg9IjMwIiB5PSIxMTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzMzMyI+LSBPbmx5IGFwcHJvdmVkIGZvbGxvd2VycyBjYW4gc2VlIGNvbnRlbnQ8L3RleHQ+CiAgPHRleHQgeD0iMzAiIHk9IjEzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIj4tIENvbW1lbnRzIGxpbWl0ZWQgdG8gZm9sbG93ZXJzPC90ZXh0PgogIDx0ZXh0IHg9IjMwIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzMzMyI+LSBUYWcgYXBwcm92YWwgcmVxdWlyZWQ8L3RleHQ+CiAgPHRleHQgeD0iMzAiIHk9IjE3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIj4tIFBlcnNvbmFsIGluZm8gaGlkZGVuPC90ZXh0PgogIDxyZWN0IHg9IjEwIiB5PSI2MCIgd2lkdGg9IjM4MCIgaGVpZ2h0PSIxMzAiIGZpbGw9IndoaXRlIiBzdHJva2U9IiNkZGQiIHN0cm9rZS13aWR0aD0iMSIvPgogIDx0ZXh0IHg9IjIwIiB5PSI4MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIj5Qcml2YWN5IFByb3RlY3Rpb25zIEVuYWJsZWQ6PC90ZXh0PgogIDx0ZXh0IHg9IjMwIiB5PSIxMTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzMzMyI+LSBPbmx5IGFwcHJvdmVkIGZvbGxvd2VycyBjYW4gc2VlIGNvbnRlbnQ8L3RleHQ+CiAgPHRleHQgeD0iMzAiIHk9IjEzMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIj4tIENvbW1lbnRzIGxpbWl0ZWQgdG8gZm9sbG93ZXJzPC90ZXh0PgogIDx0ZXh0IHg9IjMwIiB5PSIxNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzMzMyI+LSBUYWcgYXBwcm92YWwgcmVxdWlyZWQ8L3RleHQ+CiAgPHRleHQgeD0iMzAiIHk9IjE3MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjEyIiBmaWxsPSIjMzMzIj4tIFBlcnNvbmFsIGluZm8gaGlkZGVuPC90ZXh0PgogIDxyZWN0IHg9IjE1MCIgeT0iOTAiIHdpZHRoPSIxMDAiIGhlaWdodD0iNzAiIGZpbGw9IiNmNWY1ZjUiIHN0cm9rZT0iI2RkZCIgc3Ryb2tlLXdpZHRoPSIxIiByeD0iNSIvPgogIDx0ZXh0IHg9IjIwMCIgeT0iMTMwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM2NjYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkZvbGxvdzwvdGV4dD4KPC9zdmc+" alt="High privacy profile">
+                            </div>
+                            <div class="preview-description">
+                                <p>With high privacy settings:</p>
+                                <ul>
+                                    <li>Only approved followers see your content</li>
+                                    <li>Only followers can message you</li>
+                                    <li>Comments are limited to followers</li>
+                                    <li>Personal information is protected</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="action-btn reset-btn" id="reset-settings">Reset Settings</button>
+            <button class="action-btn save-btn" id="save-settings">Save Settings</button>
+        </div>
+    </div>
+    
+    <div class="badge-container" id="badge-container">
+        <button class="badge-toggle">🏆</button>
+        <div class="badge-header">
+            <h3 class="badge-title">Security Badges</h3>
+        </div>
+        <div class="badges-grid">
+            <div class="badge-item" id="badge-private">
+                <div class="badge-icon">🔒</div>
+                <div class="badge-name">Privacy Pro</div>
+            </div>
+            <div class="badge-item" id="badge-comment">
+                <div class="badge-icon">💬</div>
+                <div class="badge-name">Comment Controller</div>
+            </div>
+            <div class="badge-item" id="badge-message">
+                <div class="badge-icon">📨</div>
+                <div class="badge-name">Message Master</div>
+            </div>
+            <div class="badge-item" id="badge-tag">
+                <div class="badge-icon">🏷️</div>
+                <div class="badge-name">Tag Guardian</div>
+            </div>
+            <div class="badge-item" id="badge-security">
+                <div class="badge-icon">🛡️</div>
+                <div class="badge-name">Security Expert</div>
+            </div>
+            <div class="badge-item" id="badge-complete">
+                <div class="badge-icon">⭐</div>
+                <div class="badge-name">Safety Champion</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="success-message" id="success-message">
+        Settings saved! Your profile is now more secure.
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const platformButtons = document.querySelectorAll('.platform-btn');
+            const settingToggles = document.querySelectorAll('.setting-toggle');
+            const settingDropdowns = document.querySelectorAll('.setting-dropdown');
+            const securityMeterFill = document.getElementById('security-meter-fill');
+            const securityMeterLabel = document.getElementById('security-meter-label');
+            const resetButton = document.getElementById('reset-settings');
+            const saveButton = document.getElementById('save-settings');
+            const badgeToggle = document.querySelector('.badge-toggle');
+            const badgeContainer = document.getElementById('badge-container');
+            const successMessage = document.getElementById('success-message');
+            
+            let securityScore = 20; // Starting score
+            let currentPlatform = 'instagram';
+            
+            // Update security meter
+            function updateSecurityMeter() {
+                // Cap at 100%
+                const cappedScore = Math.min(securityScore, 100);
+                
+                securityMeterFill.style.width = `${cappedScore}%`;
+                
+                let securityLevel = 'Basic';
+                if (cappedScore >= 80) {
+                    securityLevel = 'Excellent';
+                } else if (cappedScore >= 60) {
+                    securityLevel = 'Good';
+                } else if (cappedScore >= 40) {
+                    securityLevel = 'Moderate';
+                }
+                
+                securityMeterLabel.textContent = `${securityLevel} (${cappedScore}%)`;
+                
+                // Update badges
+                updateBadges(cappedScore);
+            }
+            
+            // Update badges based on security score
+            function updateBadges(score) {
+                // Reset badges
+                document.querySelectorAll('.badge-item').forEach(badge => {
+                    badge.classList.remove('earned');
+                });
+                
+                // Check individual settings for badges based on current platform
+                if (currentPlatform === 'instagram') {
+                    const privateAccountToggle = document.querySelector('[data-setting="private-account"]');
+                    const commentControlDropdown = document.querySelector('[data-setting="comment-control"]');
+                    const messageRequestsDropdown = document.querySelector('[data-setting="message-requests"]');
+                    const tagControlToggle = document.querySelector('[data-setting="tag-control"]');
+                    
+                    if (privateAccountToggle.checked) {
+                        document.getElementById('badge-private').classList.add('earned');
+                    }
+                    
+                    if (commentControlDropdown.value !== 'everyone') {
+                        document.getElementById('badge-comment').classList.add('earned');
+                    }
+                    
+                    if (messageRequestsDropdown.value !== 'everyone') {
+                        document.getElementById('badge-message').classList.add('earned');
+                    }
+                    
+                    if (tagControlToggle.checked) {
+                        document.getElementById('badge-tag').classList.add('earned');
+                    }
+                } else if (currentPlatform === 'facebook') {
+                    const profilePrivacyDropdown = document.querySelector('[data-setting="profile-privacy"]');
+                    const tagReviewToggle = document.querySelector('[data-setting="tag-review"]');
+                    const twoFactorToggle = document.querySelector('[data-setting="two-factor"]');
+                    
+                    if (profilePrivacyDropdown.value !== 'public') {
+                        document.getElementById('badge-private').classList.add('earned');
+                    }
+                    
+                    if (tagReviewToggle.checked) {
+                        document.getElementById('badge-tag').classList.add('earned');
+                    }
+                    
+                    if (twoFactorToggle.checked) {
+                        document.getElementById('badge-security').classList.add('earned');
+                    }
+                }
+                // Add similar checks for other platforms
+                
+                // Security Expert badge for score >= 70
+                if (score >= 70) {
+                    document.getElementById('badge-security').classList.add('earned');
+                }
+                
+                // Safety Champion for score >= 90
+                if (score >= 90) {
+                    document.getElementById('badge-complete').classList.add('earned');
+                }
+            }
+            
+            // Switch between platforms
+            platformButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const platform = this.getAttribute('data-platform');
+                    
+                    // Update active button
+                    platformButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Hide all panels
+                    document.querySelectorAll('.settings-panel').forEach(panel => {
+                        panel.style.display = 'none';
+                    });
+                    
+                    // Show selected platform panel
+                    const panelId = `${platform}-panel`;
+                    const panel = document.getElementById(panelId);
+                    if (panel) {
+                        panel.style.display = 'block';
+                    }
+                    
+                    // Update current platform
+                    currentPlatform = platform;
+                    
+                    // Reset security score for new platform
+                    calculateSecurityScore();
+                });
+            });
+            
+            // Calculate security score based on settings
+            function calculateSecurityScore() {
+                securityScore = 20; // Base score
+                
+                // Add score from toggles
+                settingToggles.forEach(toggle => {
+                    if (toggle.checked) {
+                        const panel = toggle.closest('.settings-panel');
+                        if (panel.style.display !== 'none') {
+                            securityScore += parseInt(toggle.getAttribute('data-value') || 0);
+                        }
+                    }
+                });
+                
+                // Add score from dropdowns
+                settingDropdowns.forEach(dropdown => {
+                    const panel = dropdown.closest('.settings-panel');
+                    if (panel.style.display !== 'none') {
+                        const valueAttr = `data-value-${dropdown.value}`;
+                        const value = dropdown.getAttribute(valueAttr);
+                        if (value) {
+                            securityScore += parseInt(value);
+                        }
+                    }
+                });
+                
+                updateSecurityMeter();
+            }
+            
+            // Event listeners for toggles and dropdowns
+            settingToggles.forEach(toggle => {
+                toggle.addEventListener('change', calculateSecurityScore);
+            });
+            
+            settingDropdowns.forEach(dropdown => {
+                dropdown.addEventListener('change', calculateSecurityScore);
+            });
+            
+            // Reset button
+            resetButton.addEventListener('click', function() {
+                const currentPanel = document.querySelector(`.settings-panel[style*="display: block"]`);
+                if (currentPanel) {
+                    const toggles = currentPanel.querySelectorAll('.setting-toggle');
+                    const dropdowns = currentPanel.querySelectorAll('.setting-dropdown');
+                    
+                    toggles.forEach(toggle => {
+                        if (toggle.hasAttribute('checked')) {
+                            toggle.checked = true;
+                        } else {
+                            toggle.checked = false;
+                        }
+                    });
+                    
+                    dropdowns.forEach(dropdown => {
+                        dropdown.selectedIndex = 0;
+                    });
+                    
+                    calculateSecurityScore();
+                }
+            });
+            
+            // Save button
+            saveButton.addEventListener('click', function() {
+                successMessage.classList.add('active');
+                
+                setTimeout(() => {
+                    successMessage.classList.remove('active');
+                }, 3000);
+            });
+            
+            // Badge toggle
+            badgeToggle.addEventListener('click', function() {
+                badgeContainer.classList.toggle('active');
+            });
+            
+            // Initialize with Instagram selected
+            document.querySelector('.platform-btn[data-platform="instagram"]').classList.add('active');
+            document.getElementById('instagram-panel').style.display = 'block';
+            calculateSecurityScore();
+        });
+    </script>
+</body>
+</html>

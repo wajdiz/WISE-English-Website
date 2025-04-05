@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Toxicity Education</title>
+    <style>
+        :root {
+            --primary-color: #3f51b5;
+            --secondary-color: #f50057;
+            --accent-color: #2196f3;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #303f9f);
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        .header p {
+            margin: 1rem 0 0;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background-color: var(--secondary-color);
+            margin: 0.5rem auto 0;
+        }
+        
+        .feature-box {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-box h3 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+        
+        .feature-box p {
+            margin-bottom: 0;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            margin-top: 1rem;
+        }
+        
+        .btn:hover {
+            background-color: #303f9f;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #c51162;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-image {
+            height: 180px;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 3rem;
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card-content h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        .card-content p {
+            margin-bottom: 1rem;
+        }
+        
+        .footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+        
+        .footer p {
+            margin: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+        }
+        
+        /* Scenario cards styling */
+        .scenario-section {
+            margin-top: 3rem;
+        }
+        
+        .scenario-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .scenario-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .scenario-card-image {
+            height: 150px;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .scenario-card-content {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .scenario-card-content h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        .scenario-card-content p {
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+        
+        .scenario-card-footer {
+            padding: 0 1.5rem 1.5rem;
+        }
+        
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .region-title {
+            margin-top: 3rem;
+            color: var(--primary-color);
+            text-align: center;
+            position: relative;
+        }
+        
+        .region-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background-color: var(--secondary-color);
+            margin: 0.5rem auto 1.5rem;
+        }
+        
+        /* Color coding for different scenario types */
+        .cyberbullying { background-color: #e57373; }
+        .doxing { background-color: #f06292; }
+        .trolling { background-color: #ba68c8; }
+        .hate-speech { background-color: #9575cd; }
+        .harassment { background-color: #7986cb; }
+        .exclusion { background-color: #64b5f6; }
+        .impersonation { background-color: #4fc3f7; }
+        .misinformation { background-color: #4dd0e1; }
+        .privacy { background-color: #4db6ac; }
+        .scams { background-color: #81c784; }
+        .family { background-color: #aed581; }
+        .religious { background-color: #dce775; }
+        .academic { background-color: #fff176; }
+        .gaming { background-color: #ffd54f; }
+        .reputation { background-color: #ffb74d; }
+        .gender { background-color: #ff8a65; }
+        .cultural { background-color: #a1887f; }
+        .media { background-color: #90a4ae; }
+        .ramadan { background-color: #78909c; }
+        .citizenship { background-color: #b0bec5; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Online Toxicity Education</h1>
+        <p>Learn to identify, respond to, and prevent harmful online behavior</p>
+    </div>
+    
+    <div class="container">
+        <h2 class="section-title">Interactive Learning Tools</h2>
+        
+        <div class="grid">
+            <div class="feature-box">
+                <div class="feature-icon">🔍</div>
+                <h3>Toxicity Type Explorer</h3>
+                <p>Explore different types of online toxicity through an interactive mind map. Learn to identify cyberbullying, doxing, trolling, hate speech, harassment, and exclusion.</p>
+                <a href="interactive_prototypes/understanding_toxicity_explorer.html" class="btn">Explore Now</a>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-icon">🛣️</div>
+                <h3>Response Strategy Decision Tree</h3>
+                <p>Navigate through realistic scenarios to learn effective ways to respond to online toxicity. Build your personal response toolkit with proven strategies.</p>
+                <a href="interactive_prototypes/response_decision_tree.html" class="btn">Try Scenarios</a>
+            </div>
+            
+            <div class="feature-box">
+                <div class="feature-icon">🔒</div>
+                <h3>Safety Settings Simulator</h3>
+                <p>Practice configuring privacy and safety settings across popular platforms. See before/after comparisons and earn achievement badges.</p>
+                <a href="interactive_prototypes/safety_settings_simulator.html" class="btn">Configure Settings</a>
+            </div>
+        </div>
+        
+        <div class="scenario-section">
+            <h2 class="section-title">Detailed Toxicity Scenarios</h2>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 2rem;">Explore realistic scenarios covering various types of online toxicity. Each scenario includes examples, impact explanations, and recommended response strategies.</p>
+            
+            <div class="scenario-grid">
+                <div class="scenario-card">
+                    <div class="scenario-card-image cyberbullying">
+                        <span style="color: white;">👥</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Cyberbullying</h3>
+                        <p>Learn how to identify and respond to repeated harmful behavior targeting individuals online.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_cyberbullying.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image doxing">
+                        <span style="color: white;">📋</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Doxing</h3>
+                        <p>Understand the dangers of sharing private information and how to protect yourself and others.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_doxing.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image trolling">
+                        <span style="color: white;">😈</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Trolling</h3>
+                        <p>Recognize deliberate provocation and learn effective strategies to disengage from trolls.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_trolling.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image hate-speech">
+                        <span style="color: white;">🚫</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Hate Speech</h3>
+                        <p>Identify harmful content targeting identity characteristics and learn appropriate responses.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_hate_speech.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image harassment">
+                        <span style="color: white;">⚠️</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Harassment</h3>
+                        <p>Understand patterns of targeted intimidation and strategies for protection and reporting.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_harassment.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image exclusion">
+                        <span style="color: white;">🚷</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Exclusion</h3>
+                        <p>Learn about social exclusion in online environments and how to create inclusive spaces.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_exclusion.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image impersonation">
+                        <span style="color: white;">🎭</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Impersonation</h3>
+                        <p>Recognize when someone is pretending to be someone else and learn how to respond.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_impersonation.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image misinformation">
+                        <span style="color: white;">❓</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Misinformation</h3>
+                        <p>Develop skills to identify false information and verify sources before sharing.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_misinformation.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image privacy">
+                        <span style="color: white;">🔐</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Privacy Violations</h3>
+                        <p>Understand common privacy breaches and how to protect your personal information.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_privacy_violations.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image scams">
+                        <span style="color: white;">💰</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Online Scams</h3>
+                        <p>Learn to identify common scams targeting young people and strategies for prevention.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_scams.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+            </div>
+            
+            <h3 class="region-title">Qatar and GCC Region Scenarios</h3>
+            <p style="text-align: center; max-width: 800px; margin: 0 auto 2rem;">Explore scenarios specifically designed for youth in Qatar and the GCC region, addressing culturally relevant online challenges.</p>
+            
+            <div class="scenario-grid">
+                <div class="scenario-card">
+                    <div class="scenario-card-image family">
+                        <span style="color: white;">👪</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Family Privacy Boundaries</h3>
+                        <p>Navigate sharing family information online while respecting cultural privacy expectations in Qatar.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_family_privacy_boundaries.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image religious">
+                        <span style="color: white;">☪️</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Religious Content Misrepresentation</h3>
+                        <p>Respond to misrepresentation of Islamic beliefs and practices in online spaces.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_religious_content_misrepresentation.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image academic">
+                        <span style="color: white;">📚</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Academic Integrity</h3>
+                        <p>Maintain academic honesty in online learning environments while upholding Islamic values.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_academic_integrity.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image gaming">
+                        <span style="color: white;">🎮</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Cross-Cultural Gaming</h3>
+                        <p>Navigate cultural differences and potential conflicts in international gaming communities.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_cross_cultural_gaming.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image reputation">
+                        <span style="color: white;">👤</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Digital Reputation</h3>
+                        <p>Manage your online presence in alignment with Qatari cultural values and future aspirations.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_digital_reputation.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image gender">
+                        <span style="color: white;">⚧️</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Gender-Appropriate Communication</h3>
+                        <p>Navigate online interactions between genders with respect and Islamic values.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_gender_appropriate_communication.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image cultural">
+                        <span style="color: white;">🏛️</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Cultural Identity Attacks</h3>
+                        <p>Respond to discrimination based on national or cultural identity with dignity and education.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_cultural_identity_attacks.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image media">
+                        <span style="color: white;">📰</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Media Literacy for Regional News</h3>
+                        <p>Identify misinformation about Qatar and the GCC region in international media.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_media_literacy.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image ramadan">
+                        <span style="color: white;">🌙</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Ramadan Social Media Use</h3>
+                        <p>Balance social media with religious observance during the holy month of Ramadan.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_ramadan_social_media.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+                
+                <div class="scenario-card">
+                    <div class="scenario-card-image citizenship">
+                        <span style="color: white;">🏆</span>
+                    </div>
+                    <div class="scenario-card-content">
+                        <h3>Digital Citizenship in Qatar</h3>
+                        <p>Understand rights and responsibilities under Qatar's cybercrime and digital communication laws.</p>
+                    </div>
+                    <div class="scenario-card-footer">
+                        <a href="interactive_prototypes/scenario_digital_citizenship_qatar.html" class="btn">Explore Scenario</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>© 2025 Online Toxicity Education | Designed to help youth navigate online spaces safely</p>
+    </div>
+</body>
+</html>

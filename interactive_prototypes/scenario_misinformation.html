@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misinformation Scenarios - Online Toxicity Education</title>
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --accent-color: #ff6b6b;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .breadcrumbs {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumbs a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+        
+        .intro {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .intro-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .scenario-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .scenario {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .scenario-header {
+            background-color: #11998e;
+            color: white;
+            padding: 15px 20px;
+        }
+        
+        .scenario-title {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .scenario-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .scenario-content {
+            padding: 20px;
+        }
+        
+        .scenario-description {
+            margin-bottom: 20px;
+        }
+        
+        .chat-container {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .message-bubble {
+            max-width: 80%;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 18px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .received {
+            background-color: #e5e5ea;
+            align-self: flex-start;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .sent {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+            text-align: right;
+        }
+        
+        .message-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .message-sender {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .message-time {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .message-content {
+            word-break: break-word;
+        }
+        
+        .impact-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .impact-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .response-options {
+            margin-top: 20px;
+        }
+        
+        .response-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .option:hover {
+            background-color: #e5e5ea;
+        }
+        
+        .option.recommended {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .option.not-recommended {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .option-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .expert-tip {
+            background-color: rgba(17, 153, 142, 0.1);
+            border-left: 4px solid #11998e;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .expert-tip-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #11998e;
+        }
+        
+        .resources {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .resources-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .resources-list {
+            list-style-type: none;
+        }
+        
+        .resources-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .resources-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .resources-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .resources-list a:hover {
+            text-decoration: underline;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .nav-button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .back-to-home {
+            background-color: #6c757d;
+        }
+        
+        .back-to-home:hover {
+            background-color: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .scenario-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Misinformation Scenarios</h1>
+                <p class="subtitle">Understanding, recognizing, and responding to online misinformation</p>
+            </div>
+        </header>
+        
+        <div class="breadcrumbs">
+            <a href="../index.html">Home</a> &gt; <a href="../index.html#understand-section">Understanding Online Toxicity</a> &gt; Misinformation Scenarios
+        </div>
+        
+        <div class="intro">
+            <h2 class="intro-title">What is Online Misinformation?</h2>
+            <p>Online misinformation refers to false or misleading content that is shared online, often with the intent to deceive or manipulate. Unlike some other forms of online toxicity that target individuals directly, misinformation can harm communities and society at large by spreading falsehoods that influence beliefs, behaviors, and decisions. In today's digital environment, misinformation can spread rapidly through social media, messaging apps, and websites.</p>
+            <p>The following scenarios illustrate different forms of online misinformation and provide guidance on how to recognize and respond effectively.</p>
+        </div>
+        
+        <div class="scenario-container">
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 1: Health Misinformation</h3>
+                    <p class="scenario-subtitle">Social Media Platform</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Emma, 16, sees a viral post claiming that a common food additive causes serious health problems. The post is being shared widely by friends and includes dramatic personal testimonials but no scientific evidence.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">HealthTruth101:</span>
+                                <span class="message-time">Yesterday, 3:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>URGENT WARNING! Scientists are finally admitting that the food additive E330 causes severe health problems including cancer and neurological disorders! Big companies have been hiding this for years. I stopped consuming anything with E330 and my chronic pain disappeared in just 2 weeks! Share to save lives! #TruthAboutE330 #WakeUp</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Friend1:</span>
+                                <span class="message-time">Yesterday, 4:20 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>OMG this is scary! I just checked and E330 is in almost everything I eat! 😱 Sharing this now!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Friend2:</span>
+                                <span class="message-time">Yesterday, 5:10 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>My cousin's friend had the same experience! Stopped eating E330 and her migraines went away. This needs to be investigated!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Emma:</span>
+                                <span class="message-time">Yesterday, 5:30 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Wait, I just looked up E330 and it's actually citric acid - a natural compound found in citrus fruits. It's been used safely for decades. Can you share the scientific studies this post is referring to?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">HealthTruth101:</span>
+                                <span class="message-time">Yesterday, 6:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>The studies are being suppressed by the food industry! Do your own research! Thousands of people are reporting the same benefits after eliminating E330. Why would so many people lie? #TheTruthIsOutThere</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Health misinformation can lead to:</p>
+                        <ul>
+                            <li>Unnecessary fear and anxiety about safe products or treatments</li>
+                            <li>Avoiding beneficial foods or medications based on false information</li>
+                            <li>Wasting money on unnecessary alternative products</li>
+                            <li>Delaying proper medical care in favor of unproven remedies</li>
+                            <li>Spreading misinformation to vulnerable people who may make harmful decisions</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Verify with Credible Sources</span>
+                                <p>Check information against reliable health sources like the CDC, WHO, or medical school websites before believing or sharing health claims.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Share Accurate Information</span>
+                                <p>If you see friends sharing misinformation, respectfully provide accurate information from credible sources. Focus on facts rather than criticizing the person.</p>
+                            </div>
+                            
+                            <div class="option not-recommended">
+                                <span class="option-label">Not Recommended: Sharing "Just in Case"</span>
+                                <p>Sharing health warnings "just in case they're true" can contribute to unnecessary panic and the spread of misinformation.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>When evaluating health claims online, look for red flags such as dramatic language ("URGENT WARNING!"), claims of conspiracy ("being suppressed"), reliance on anecdotal evidence rather than scientific studies, and pressure to share quickly. Legitimate health information typically includes references to peer-reviewed research, is published by recognized health organizations, and doesn't rely on emotional manipulation to spread its message.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 2: Manipulated Images</h3>
+                    <p class="scenario-subtitle">News Sharing Platform</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Miguel, 15, sees a shocking image being shared that appears to show a celebrity making an offensive gesture at a charity event. The image has generated outrage and calls to boycott the celebrity's work.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">CelebrityNews:</span>
+                                <span class="message-time">Monday, 10:30 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>BREAKING: Famous actor shows true colors at children's charity event! Caught making offensive gesture when he thought cameras weren't looking. RT to expose! #CancelCulture #Exposed</p>
+                                <p>[Image of celebrity appearing to make offensive gesture]</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">User1:</span>
+                                <span class="message-time">Monday, 11:15 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>I always knew this person was fake! Boycotting all their movies from now on. What a disgusting person to do this at a CHILDREN'S charity!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Miguel:</span>
+                                <span class="message-time">Monday, 11:30 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>This doesn't seem right. I'm going to check if there are other photos from this event.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Miguel:</span>
+                                <span class="message-time">Monday, 11:45 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>I found the original video footage. The celebrity was actually waving to a child and the image was manipulated. Here's the link to the full video: [link to original footage]</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">User2:</span>
+                                <span class="message-time">Monday, 12:05 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Thanks for fact-checking this! I almost shared it without verifying. It's scary how easy it is to manipulate images these days.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Manipulated images and videos can lead to:</p>
+                        <ul>
+                            <li>Damage to innocent people's reputations and careers</li>
+                            <li>Public outrage based on false information</li>
+                            <li>Erosion of trust in authentic media</li>
+                            <li>Distraction from real issues and events</li>
+                            <li>Increased polarization and conflict between groups</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Reverse Image Search</span>
+                                <p>Use tools like Google Images, TinEye, or other reverse image search engines to find the original source of an image and check if it has been altered.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Look for Multiple Sources</span>
+                                <p>Check if reputable news sources are reporting the same story. If a shocking image is real, it will typically be covered by multiple credible outlets.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Share Corrections</span>
+                                <p>If you discover an image is manipulated, share the correction with the same networks where you saw the false image circulating.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>When examining potentially manipulated images, look for signs of editing such as unusual lighting, shadows that don't match, blurry areas, or distorted proportions. With the rise of AI-generated and deepfake content, it's becoming increasingly important to verify images and videos from multiple sources before believing or sharing them. Remember that context matters - even unaltered images can be misleading if presented with false context about when or where they were taken.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 3: Crisis Misinformation</h3>
+                    <p class="scenario-subtitle">Messaging App</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>During a natural disaster in a nearby city, Aiden, 17, receives a forwarded message claiming that emergency services are overwhelmed and civilians should evacuate immediately using specific routes. The message claims to be from "emergency officials" but has no official source.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Family Group Chat:</span>
+                                <span class="message-time">Today, 2:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>URGENT ALERT FROM EMERGENCY OFFICIALS: The dam is at risk of breaking within the next 3 hours. All residents in the following areas must evacuate IMMEDIATELY: Riverside, Downtown, Oakwood. DO NOT use Highway 7 as it is flooded. Use Routes 28 and 42 only. Emergency services are overwhelmed so DO NOT call 911 unless life-threatening emergency. Forward this to everyone you know in the area!!! This is not a drill!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Uncle:</span>
+                                <span class="message-time">Today, 2:20 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Oh my god! Your cousin lives in Riverside! I'm calling her right now to make sure she evacuates!</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Aiden:</span>
+                                <span class="message-time">Today, 2:25 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Wait, I don't see this on any official emergency channels. Let me check the city's emergency management website and social media.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Aiden:</span>
+                                <span class="message-time">Today, 2:30 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>I just checked the official city emergency management Twitter and website. They say this message is FALSE. The dam is secure and there is NO evacuation order. They're asking people NOT to spread this message as it's causing panic and jamming the real emergency lines.</p>
+                                <p>[Screenshot of official emergency management statement]</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Mom:</span>
+                                <span class="message-time">Today, 2:35 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Thank you for checking, Aiden! I'll let everyone know this is false information. It's scary how these rumors spread during emergencies.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Crisis misinformation can lead to:</p>
+                        <ul>
+                            <li>Panic and unnecessary evacuations</li>
+                            <li>Traffic congestion that hampers real emergency responses</li>
+                            <li>Overwhelming emergency services with calls and inquiries</li>
+                            <li>People making dangerous decisions based on false information</li>
+                            <li>Distrust in official communications during future emergencies</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Verify with Official Sources</span>
+                                <p>Check official government websites, verified social media accounts of emergency services, or local news stations before acting on or sharing emergency information.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Share Official Information</span>
+                                <p>If you see misinformation spreading, share links to official sources with correct information to help counter the false narratives.</p>
+                            </div>
+                            
+                            <div class="option not-recommended">
+                                <span class="option-label">Not Recommended: Forwarding "Just in Case"</span>
+                                <p>Even if you're not sure if emergency information is accurate, forwarding it "just in case" can contribute to panic and confusion during crisis situations.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>During emergencies and natural disasters, misinformation tends to spread rapidly as people seek information in chaotic situations. Prepare in advance by identifying and following official emergency management accounts for your area on social media and bookmarking official websites. Anonymous messages forwarded through messaging apps are particularly prone to containing misinformation during crises. Always look for verification from multiple official sources before taking action based on emergency alerts received through unofficial channels.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h3 class="resources-title">Additional Resources for Dealing with Online Misinformation</h3>
+            <ul class="resources-list">
+                <li><a href="https://www.commonsensemedia.org/news-and-media-literacy" target="_blank">Common Sense Media: News and Media Literacy</a> - Resources for developing critical thinking skills about media</li>
+                <li><a href="https://www.factcheck.org/" target="_blank">FactCheck.org</a> - Nonpartisan website for checking the accuracy of claims in U.S. politics</li>
+                <li><a href="https://www.who.int/campaigns/connecting-the-world-to-combat-coronavirus/how-to-report-misinformation-online" target="_blank">WHO: How to Report Misinformation Online</a> - Guide to reporting health misinformation</li>
+                <li><a href="https://www.ifla.org/publications/node/11174" target="_blank">IFLA: How to Spot Fake News</a> - Infographic on evaluating information sources</li>
+            </ul>
+        </div>
+        
+        <div class="navigation-buttons">
+            <a href="scenario_impersonation.html" class="nav-button">Previous: Impersonation Scenarios</a>
+            <a href="scenario_privacy_violations.html" class="nav-button">Next: Privacy Violations Scenarios</a>
+        </div>
+    </div>
+</body>
+</html>

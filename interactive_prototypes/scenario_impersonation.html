@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impersonation Scenarios - Online Toxicity Education</title>
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --accent-color: #ff6b6b;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2193b0, #6dd5ed);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .breadcrumbs {
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumbs a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+        
+        .intro {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .intro-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .scenario-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .scenario {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .scenario-header {
+            background-color: #2193b0;
+            color: white;
+            padding: 15px 20px;
+        }
+        
+        .scenario-title {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .scenario-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .scenario-content {
+            padding: 20px;
+        }
+        
+        .scenario-description {
+            margin-bottom: 20px;
+        }
+        
+        .chat-container {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .message-bubble {
+            max-width: 80%;
+            margin-bottom: 15px;
+            padding: 12px 15px;
+            border-radius: 18px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .received {
+            background-color: #e5e5ea;
+            align-self: flex-start;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .sent {
+            background-color: #dcf8c6;
+            align-self: flex-end;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+            text-align: right;
+        }
+        
+        .message-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .message-sender {
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .message-time {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .message-content {
+            word-break: break-word;
+        }
+        
+        .impact-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .impact-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .response-options {
+            margin-top: 20px;
+        }
+        
+        .response-title {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .option:hover {
+            background-color: #e5e5ea;
+        }
+        
+        .option.recommended {
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .option.not-recommended {
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .option-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .expert-tip {
+            background-color: rgba(33, 147, 176, 0.1);
+            border-left: 4px solid #2193b0;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .expert-tip-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2193b0;
+        }
+        
+        .resources {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .resources-title {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .resources-list {
+            list-style-type: none;
+        }
+        
+        .resources-list li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .resources-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        .resources-list a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .resources-list a:hover {
+            text-decoration: underline;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        .nav-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color var(--transition-speed);
+        }
+        
+        .nav-button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .back-to-home {
+            background-color: #6c757d;
+        }
+        
+        .back-to-home:hover {
+            background-color: #5a6268;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .scenario-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>Impersonation Scenarios</h1>
+                <p class="subtitle">Understanding, recognizing, and responding to online impersonation</p>
+            </div>
+        </header>
+        
+        <div class="breadcrumbs">
+            <a href="../index.html">Home</a> &gt; <a href="../index.html#understand-section">Understanding Online Toxicity</a> &gt; Impersonation Scenarios
+        </div>
+        
+        <div class="intro">
+            <h2 class="intro-title">What is Online Impersonation?</h2>
+            <p>Online impersonation occurs when someone pretends to be another person online without their consent. This can involve creating fake accounts using someone else's name and photos, hacking into existing accounts, or otherwise misrepresenting oneself as another person. Impersonation is particularly harmful because it can damage the victim's reputation and relationships while giving the impersonator access to the victim's social network.</p>
+            <p>The following scenarios illustrate different forms of online impersonation and provide guidance on how to respond effectively.</p>
+        </div>
+        
+        <div class="scenario-container">
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 1: Social Media Impersonation</h3>
+                    <p class="scenario-subtitle">Social Media Platform</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Maya, 16, discovers that someone has created a fake profile using her name and photos. The impersonator is posting embarrassing content and sending inappropriate messages to Maya's friends and classmates.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Best Friend:</span>
+                                <span class="message-time">4:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Maya, what's going on with you? Why are you posting those weird things and sending me those messages?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Maya:</span>
+                                <span class="message-time">4:17 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>What are you talking about? I haven't posted anything weird or sent you any messages today.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Best Friend:</span>
+                                <span class="message-time">4:20 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Check your profile. You've been posting all day and messaging people saying embarrassing things about yourself and others.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Maya:</span>
+                                <span class="message-time">4:22 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>That's not me! Someone must have created a fake account with my name and photos. Can you send me a screenshot or link to it?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Best Friend:</span>
+                                <span class="message-time">4:25 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>[Screenshot of a profile that looks like Maya's but with the username "Maya_Thompson02" instead of Maya's actual username "MayaT2008"]</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>This type of impersonation can lead to:</p>
+                        <ul>
+                            <li>Damage to reputation and relationships</li>
+                            <li>Emotional distress from being misrepresented</li>
+                            <li>Being blamed for things you didn't say or do</li>
+                            <li>Loss of trust from friends and contacts</li>
+                            <li>Anxiety about what the impersonator might do next</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Report the Fake Account</span>
+                                <p>Report the impersonation to the platform immediately. Most social media platforms have specific procedures for reporting fake accounts and impersonation.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Alert Your Network</span>
+                                <p>Post on your authentic accounts to let friends know about the fake profile and ask them to report it too. This helps prevent further damage to your relationships.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Document Everything</span>
+                                <p>Take screenshots of the fake profile, posts, and any messages you receive about it. This documentation may be needed if the situation escalates.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>When reporting impersonation to social media platforms, be specific about how the account is impersonating you. Mention that they're using your photos, name, and pretending to be you. Many platforms prioritize impersonation reports, especially when the impersonator is actively posting as you. If the platform doesn't respond quickly, consider having friends and family report the account as well, as multiple reports can accelerate the review process.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 2: Account Takeover</h3>
+                    <p class="scenario-subtitle">Email and Social Media</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Tyler, 15, discovers that someone has gained access to his email account and is using it to log into his social media profiles. The hacker is sending messages to Tyler's contacts asking for money and posting content that doesn't reflect Tyler's values.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Email Alert:</span>
+                                <span class="message-time">Tuesday, 7:30 AM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Your account was recently accessed from a new device in [location different from Tyler's]. If this wasn't you, secure your account immediately.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Uncle:</span>
+                                <span class="message-time">Tuesday, 3:15 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Tyler, I got your message about being stranded and needing money for a bus ticket. Is everything okay? That doesn't sound like you.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Tyler (on phone):</span>
+                                <span class="message-time">Tuesday, 3:20 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>I didn't send that message! I think my account has been hacked. Please don't send any money and let other family members know.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Friend:</span>
+                                <span class="message-time">Tuesday, 4:05 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Dude, what's with all the weird posts on your profile? And why are you sending everyone links to some sketchy website?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Tyler (on phone):</span>
+                                <span class="message-time">Tuesday, 4:10 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>My account was hacked! Don't click any links and please report my profile as hacked if you can.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>Account takeover can lead to:</p>
+                        <ul>
+                            <li>Financial harm if the hacker convinces contacts to send money</li>
+                            <li>Privacy violations if the hacker accesses private messages and information</li>
+                            <li>Reputation damage from posts made in your name</li>
+                            <li>Loss of access to your own accounts and digital identity</li>
+                            <li>Potential spread of malware to contacts who trust links from "you"</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Immediate Password Reset</span>
+                                <p>If you still have any access, immediately change passwords on affected accounts and any accounts that share the same password. Use the "forgot password" option if necessary.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Enable Two-Factor Authentication</span>
+                                <p>After regaining access, enable two-factor authentication on all accounts to prevent future unauthorized access.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Contact Platforms Directly</span>
+                                <p>Use the platform's account recovery and hacked account reporting options. Most major platforms have specific procedures for handling compromised accounts.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>When dealing with a hacked account, time is critical. Use an alternative communication method (like texting or calling from your phone) to alert close contacts immediately about the hack to prevent them from engaging with the hacker. If the hacker has changed recovery information like backup email addresses or phone numbers, you may need to use the platform's identity verification processes, which can include providing ID or answering security questions. Document these steps as you go, as you may need this information if the situation escalates.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scenario">
+                <div class="scenario-header">
+                    <h3 class="scenario-title">Scenario 3: Catfishing</h3>
+                    <p class="scenario-subtitle">Dating App / Social Media</p>
+                </div>
+                <div class="scenario-content">
+                    <div class="scenario-description">
+                        <p>Jordan, 17, discovers that someone has been using their photos to create a fake dating profile. The impersonator has been building romantic relationships with multiple people online while pretending to be Jordan.</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Unknown Person:</span>
+                                <span class="message-time">Friday, 8:30 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>Hey Jordan, why did you ghost me after we talked for three weeks? I thought we had something special.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Jordan:</span>
+                                <span class="message-time">Friday, 8:35 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>I'm sorry, but I don't think we've ever talked before. You might have me confused with someone else.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Unknown Person:</span>
+                                <span class="message-time">Friday, 8:40 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>We've been talking on DateConnect for weeks. You said you were a senior at Westlake High and sent me all these photos. Are you seriously pretending not to know me now?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble sent">
+                            <div class="message-info">
+                                <span class="message-sender">Jordan:</span>
+                                <span class="message-time">Friday, 8:45 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>I've never used DateConnect. Someone must be using my photos and pretending to be me. Could you send me screenshots of the profile and our conversations?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="message-bubble received">
+                            <div class="message-info">
+                                <span class="message-sender">Unknown Person:</span>
+                                <span class="message-time">Friday, 8:50 PM</span>
+                            </div>
+                            <div class="message-content">
+                                <p>[Screenshots showing a dating profile with Jordan's photos but with fabricated personal information and conversations]</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="impact-section">
+                        <h4 class="impact-title">Potential Impact:</h4>
+                        <p>This type of catfishing impersonation can cause:</p>
+                        <ul>
+                            <li>Damage to reputation when the impersonator's behavior is attributed to you</li>
+                            <li>Uncomfortable confrontations from people who believe they had a relationship with you</li>
+                            <li>Safety concerns if people who were deceived become angry or feel betrayed</li>
+                            <li>Emotional distress from having your identity misused in intimate contexts</li>
+                            <li>Anxiety about how many people have been deceived and what was said</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="response-options">
+                        <h4 class="response-title">Response Options:</h4>
+                        <div class="options-container">
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Report to the Platform</span>
+                                <p>Report the fake profile to the dating app or social media platform where it's being used. Provide evidence that you are the person in the photos.</p>
+                            </div>
+                            
+                            <div class="option recommended">
+                                <span class="option-label">Recommended: Inform Trusted Adults</span>
+                                <p>Share what's happening with parents or guardians, as this situation could potentially escalate and may require adult intervention.</p>
+                            </div>
+                            
+                            <div class="option not-recommended">
+                                <span class="option-label">Not Recommended: Confronting the Catfisher Directly</span>
+                                <p>If you discover who is behind the fake profile, it's generally not advisable to confront them directly, as this could lead to escalation or retaliation.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="expert-tip">
+                        <h4 class="expert-tip-title">Expert Tip:</h4>
+                        <p>Catfishing situations can be particularly complex because they involve multiple victims - both the person whose photos are being used without consent and the people who are being deceived into believing they're building a relationship with someone who doesn't exist. When communicating with people who contact you believing they know you, be clear but compassionate. They may feel embarrassed or betrayed when they learn the truth. Consider using reverse image search tools like Google Images or TinEye to check if your photos are being used elsewhere online without your knowledge.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h3 class="resources-title">Additional Resources for Dealing with Online Impersonation</h3>
+            <ul class="resources-list">
+                <li><a href="https://www.consumer.ftc.gov/articles/how-recognize-and-avoid-phishing-scams" target="_blank">FTC: Recognizing and Avoiding Phishing Scams</a> - Information on protecting accounts from unauthorized access</li>
+                <li><a href="https://www.connectsafely.org/catfishing/" target="_blank">ConnectSafely: Catfishing</a> - Guide to understanding and responding to catfishing</li>
+                <li><a href="https://www.identitytheft.gov/" target="_blank">IdentityTheft.gov</a> - Resources for responding to identity theft, including online impersonation</li>
+                <li><a href="https://www.getsafeonline.org/" target="_blank">Get Safe Online</a> - Comprehensive advice on protecting online accounts and identity</li>
+            </ul>
+        </div>
+        
+        <div class="navigation-buttons">
+            <a href="scenario_exclusion.html" class="nav-button">Previous: Exclusion Scenarios</a>
+            <a href="scenario_misinformation.html" class="nav-button">Next: Misinformation Scenarios</a>
+        </div>
+    </div>
+</body>
+</html>

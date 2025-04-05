@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Toxicity Type Explorer</title>
+    <style>
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --accent-color: #ff6b6b;
+            --text-color: #333;
+            --light-bg: #f9f9f9;
+            --card-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            --transition-speed: 0.3s;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+        
+        .toxicity-map {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            min-height: 600px;
+            margin-top: 40px;
+        }
+        
+        .central-hub {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            z-index: 10;
+            transition: transform var(--transition-speed);
+        }
+        
+        .central-hub:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+        
+        .central-hub-text {
+            font-size: 1.2rem;
+            padding: 15px;
+        }
+        
+        .branch {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            cursor: pointer;
+            transition: all var(--transition-speed);
+            z-index: 5;
+        }
+        
+        .branch:hover {
+            transform: scale(1.1);
+        }
+        
+        .branch-1 {
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #ff6b6b, #ee0979);
+        }
+        
+        .branch-2 {
+            top: 30%;
+            right: 15%;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+        }
+        
+        .branch-3 {
+            bottom: 30%;
+            right: 15%;
+            background: linear-gradient(135deg, #fc4a1a, #f7b733);
+        }
+        
+        .branch-4 {
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+        }
+        
+        .branch-5 {
+            bottom: 30%;
+            left: 15%;
+            background: linear-gradient(135deg, #834d9b, #d04ed6);
+        }
+        
+        .branch-6 {
+            top: 30%;
+            left: 15%;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+        }
+        
+        .connector {
+            position: absolute;
+            background-color: rgba(200, 200, 200, 0.5);
+            z-index: 1;
+            transform-origin: left center;
+        }
+        
+        .detail-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 80%;
+            max-width: 600px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-speed);
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+        
+        .detail-card.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .detail-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .detail-card p {
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        
+        .detail-section {
+            margin-bottom: 20px;
+        }
+        
+        .detail-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .example-scenario {
+            background-color: var(--light-bg);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .impact-stats {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .stat-item {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            padding: 10px;
+            margin: 5px;
+            background-color: var(--light-bg);
+            border-radius: 8px;
+        }
+        
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .testimonial {
+            font-style: italic;
+            padding: 15px;
+            border-left: 4px solid var(--secondary-color);
+            margin-bottom: 15px;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: color var(--transition-speed);
+        }
+        
+        .close-btn:hover {
+            color: var(--accent-color);
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-speed);
+        }
+        
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .did-you-know {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            max-width: 300px;
+            box-shadow: var(--card-shadow);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all var(--transition-speed);
+            z-index: 20;
+        }
+        
+        .did-you-know.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .did-you-know h4 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .did-you-know p {
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .toxicity-map {
+                min-height: 500px;
+            }
+            
+            .central-hub {
+                width: 140px;
+                height: 140px;
+            }
+            
+            .branch {
+                width: 100px;
+                height: 100px;
+                font-size: 0.9rem;
+            }
+            
+            .detail-card {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Understanding Online Toxicity</h1>
+            <p class="subtitle">Explore different types of online toxicity and learn how to recognize them</p>
+        </header>
+        
+        <div class="toxicity-map">
+            <div class="central-hub" id="central-hub">
+                <div class="central-hub-text">Online Toxicity</div>
+            </div>
+            
+            <div class="branch branch-1" data-type="cyberbullying">Cyberbullying</div>
+            <div class="branch branch-2" data-type="doxing">Doxing</div>
+            <div class="branch branch-3" data-type="trolling">Trolling</div>
+            <div class="branch branch-4" data-type="hate-speech">Hate Speech</div>
+            <div class="branch branch-5" data-type="harassment">Harassment</div>
+            <div class="branch branch-6" data-type="exclusion">Exclusion</div>
+            
+            <!-- Connectors will be added by JavaScript -->
+        </div>
+    </div>
+    
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="detail-card" id="cyberbullying-card">
+        <button class="close-btn">&times;</button>
+        <h2>Cyberbullying</h2>
+        <p>Cyberbullying is the use of digital communication to bully a person, typically by sending messages of an intimidating or threatening nature. It's persistent, repeated, and intended to harm others.</p>
+        
+        <div class="detail-section">
+            <h3>Example Scenario</h3>
+            <div class="example-scenario">
+                <p>Alex posts a photo of their new haircut on social media. Soon after, classmates start leaving mean comments like "You look terrible!" and "No one will ever like you with that hair!" These comments continue for days, with others joining in and sharing the photo with negative captions.</p>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>Impact Statistics</h3>
+            <div class="impact-stats">
+                <div class="stat-item">
+                    <div class="stat-number">37%</div>
+                    <div class="stat-label">of young people experience cyberbullying</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">60%</div>
+                    <div class="stat-label">don't tell their parents when it happens</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3×</div>
+                    <div class="stat-label">more likely to have suicidal thoughts</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>How It Feels</h3>
+            <div class="testimonial">
+                <p>"It felt like I couldn't escape. At school, at home, even in my bedroom - the bullying followed me everywhere through my phone. I was afraid to check my notifications and started to feel like maybe what they were saying was true." - Jamie, 14</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="detail-card" id="doxing-card">
+        <button class="close-btn">&times;</button>
+        <h2>Doxing</h2>
+        <p>Doxing is the act of publicly revealing previously private personal information about an individual or organization, usually through the internet. This information may include real name, home address, workplace, phone number, financial information, and more.</p>
+        
+        <div class="detail-section">
+            <h3>Example Scenario</h3>
+            <div class="example-scenario">
+                <p>Taylor disagreed with someone during an online game. The other player became angry and said, "I know who you are." Later that day, this player posted Taylor's real name, school, and home address in the game's public chat, saying "Go get him." Taylor started receiving threatening messages from strangers who now knew where they lived.</p>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>Impact Statistics</h3>
+            <div class="impact-stats">
+                <div class="stat-item">
+                    <div class="stat-number">21%</div>
+                    <div class="stat-label">of teens worry about being doxed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">47%</div>
+                    <div class="stat-label">of doxing victims experience harassment offline</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">73%</div>
+                    <div class="stat-label">change their online habits after being doxed</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>How It Feels</h3>
+            <div class="testimonial">
+                <p>"I felt violated and unsafe in my own home. Knowing that strangers on the internet knew where I lived made me constantly look over my shoulder. I had to change my phone number and my parents considered moving." - Sam, 16</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="detail-card" id="trolling-card">
+        <button class="close-btn">&times;</button>
+        <h2>Trolling</h2>
+        <p>Trolling is the deliberate act of making random, offensive, or controversial comments online with the aim of provoking an emotional reaction or disrupting on-topic discussion.</p>
+        
+        <div class="detail-section">
+            <h3>Example Scenario</h3>
+            <div class="example-scenario">
+                <p>A community forum is having a serious discussion about mental health resources for teens. Suddenly, a user named "JustJoking42" starts posting irrelevant memes, making fun of people sharing their experiences, and writing inflammatory comments like "Nobody cares about your problems" and "This is so boring, can we talk about something fun instead?"</p>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>Impact Statistics</h3>
+            <div class="impact-stats">
+                <div class="stat-item">
+                    <div class="stat-number">38%</div>
+                    <div class="stat-label">of online users have experienced trolling</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">41%</div>
+                    <div class="stat-label">of teens have seen trolling lead to serious arguments</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">67%</div>
+                    <div class="stat-label">of online communities report trolling as a problem</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>How It Feels</h3>
+            <div class="testimonial">
+                <p>"I was trying to get help for something I was really struggling with, and this person just kept making jokes about it. It made me feel like my problems weren't important and that I shouldn't have spoken up. I didn't post in that forum again." - Riley, 15</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="detail-card" id="hate-speech-card">
+        <button class="close-btn">&times;</button>
+        <h2>Hate Speech</h2>
+        <p>Hate speech is communication that vilifies, intimidates, or incites hatred against a person or a group based on attributes such as race, ethnicity, gender, religion, sexual orientation, or disability.</p>
+        
+        <div class="detail-section">
+            <h3>Example Scenario</h3>
+            <div class="example-scenario">
+                <p>Jordan posts a video celebrating their cultural heritage. The comments section quickly fills with messages attacking Jordan's ethnicity, using stereotypes and slurs, and suggesting that people like Jordan don't belong in the country. Some comments even encourage others to "send a message" to people of Jordan's background.</p>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>Impact Statistics</h3>
+            <div class="impact-stats">
+                <div class="stat-item">
+                    <div class="stat-number">65%</div>
+                    <div class="stat-label">of young people have seen hate speech online</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">42%</div>
+                    <div class="stat-label">have been personally targeted</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">78%</div>
+                    <div class="stat-label">report negative mental health impacts</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>How It Feels</h3>
+            <div class="testimonial">
+                <p>"It made me feel like I had to hide who I really am. I started to feel ashamed of my culture and tried to act 'more normal' whatever that means. It took me a long time to realize that the problem wasn't me - it was the hateful people online." - Jordan, 17</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="detail-card" id="harassment-card">
+        <button class="close-btn">&times;</button>
+        <h2>Harassment</h2>
+        <p>Online harassment involves persistent and targeted behaviors that annoy, alarm, or threaten individuals. It can include unwanted contact, stalking, sexual harassment, and coordinated attacks.</p>
+        
+        <div class="detail-section">
+            <h3>Example Scenario</h3>
+            <div class="example-scenario">
+                <p>After turning down a date request, Casey starts receiving dozens of messages daily from the same person across multiple platforms. The messages alternate between romantic pleas, angry accusations, and threats. When Casey blocks one account, the person creates new ones to continue the unwanted contact. They also start commenting on all of Casey's posts and contacting Casey's friends.</p>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>Impact Statistics</h3>
+            <div class="impact-stats">
+                <div class="stat-item">
+                    <div class="stat-number">40%</div>
+                    <div class="stat-label">of internet users have experienced harassment</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">53%</div>
+                    <div class="stat-label">of young women have faced sexual harassment online</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">37%</div>
+                    <div class="stat-label">report severe emotional distress as a result</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>How It Feels</h3>
+            <div class="testimonial">
+                <p>"I felt like I was being hunted. Every notification made my heart race. I was afraid to post anything or go online. I even started worrying about my physical safety because this person seemed so obsessed and knew so much about me." - Casey, 16</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="detail-card" id="exclusion-card">
+        <button class="close-btn">&times;</button>
+        <h2>Social Exclusion</h2>
+        <p>Online social exclusion is the deliberate act of leaving someone out of online groups, conversations, or activities. It's a form of relational aggression that can be just as harmful as more direct forms of bullying.</p>
+        
+        <div class="detail-section">
+            <h3>Example Scenario</h3>
+            <div class="example-scenario">
+                <p>Morgan notices that all their friends are posting photos from a party they weren't invited to. In the group chat that Morgan is part of, no one mentioned the gathering. When Morgan asks about it, people read the message but don't respond. Later, Morgan discovers they've been removed from several group chats and can see that friends have created new ones without them.</p>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>Impact Statistics</h3>
+            <div class="impact-stats">
+                <div class="stat-item">
+                    <div class="stat-number">48%</div>
+                    <div class="stat-label">of teens have experienced online exclusion</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">61%</div>
+                    <div class="stat-label">report feelings of loneliness as a result</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">33%</div>
+                    <div class="stat-label">say it affected their school performance</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>How It Feels</h3>
+            <div class="testimonial">
+                <p>"It's like being invisible. You can see everyone having fun without you, and it hurts because you don't even know what you did wrong. I kept checking my phone hoping for an invitation or explanation that never came. The silence was worse than if they'd just said they didn't want me around." - Morgan, 13</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="did-you-know" id="did-you-know">
+        <h4>Did You Know?</h4>
+        <p id="fact-text">Online toxicity isn't just a teen issue - 40% of adults have experienced some form of online harassment.</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create connectors
+            const centralHub = document.getElementById('central-hub');
+            const branches = document.querySelectorAll('.branch');
+            const overlay = document.getElementById('overlay');
+            const closeButtons = document.querySelectorAll('.close-btn');
+            const didYouKnow = document.getElementById('did-you-know');
+            
+            // Create connectors from central hub to each branch
+            branches.forEach(branch => {
+                createConnector(centralHub, branch);
+            });
+            
+            // Handle branch clicks
+            branches.forEach(branch => {
+                branch.addEventListener('click', function() {
+                    const type = this.getAttribute('data-type');
+                    const card = document.getElementById(`${type}-card`);
+                    
+                    if (card) {
+                        card.classList.add('active');
+                        overlay.classList.add('active');
+                    }
+                });
+            });
+            
+            // Handle close button clicks
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const card = this.closest('.detail-card');
+                    card.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+            });
+            
+            // Handle overlay clicks
+            overlay.addEventListener('click', function() {
+                document.querySelectorAll('.detail-card.active').forEach(card => {
+                    card.classList.remove('active');
+                });
+                overlay.classList.remove('active');
+            });
+            
+            // Random facts
+            const facts = [
+                "Online toxicity isn't just a teen issue - 40% of adults have experienced some form of online harassment.",
+                "Girls are more likely than boys to be both victims and perpetrators of cyberbullying.",
+                "Most social media platforms have tools to report harmful content, but only about 1 in 10 incidents are reported.",
+                "The psychological effects of cyberbullying can be as severe as those from face-to-face bullying.",
+                "Having open conversations about online experiences can reduce the risk of serious harm from online toxicity.",
+                "Bystander intervention can reduce cyberbullying incidents by up to 30%.",
+                "Many forms of online harassment can be illegal and have real-world legal consequences.",
+                "Teens who experience cyberbullying are 9 times more likely to consider suicide."
+            ];
+            
+            // Show random facts periodically
+            function showRandomFact() {
+                const factText = document.getElementById('fact-text');
+                const randomFact = facts[Math.floor(Math.random() * facts.length)];
+                factText.textContent = randomFact;
+                
+                didYouKnow.classList.add('active');
+                
+                setTimeout(() => {
+                    didYouKnow.classList.remove('active');
+                }, 5000);
+            }
+            
+            // Show first fact after 10 seconds
+            setTimeout(showRandomFact, 10000);
+            
+            // Show new facts every 30 seconds
+            setInterval(showRandomFact, 30000);
+            
+            // Function to create connector between two elements
+            function createConnector(from, to) {
+                const connector = document.createElement('div');
+                connector.classList.add('connector');
+                
+                const fromRect = from.getBoundingClientRect();
+                const toRect = to.getBoundingClientRect();
+                
+                const fromCenterX = fromRect.left + fromRect.width / 2;
+                const fromCenterY = fromRect.top + fromRect.height / 2;
+                const toCenterX = toRect.left + toRect.width / 2;
+                const toCenterY = toRect.top + toRect.height / 2;
+                
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                const dx = toCenterX - fromCenterX;
+                const dy = (toCenterY + scrollTop) - (fromCenterY + scrollTop);
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+                
+                connector.style.width = `${distance}px`;
+                connector.style.height = '3px';
+                connector.style.top = `${fromCenterY + scrollTop}px`;
+                connector.style.left = `${fromCenterX}px`;
+                connector.style.transform = `rotate(${angle}deg)`;
+                
+                document.body.appendChild(connector);
+            }
+            
+            // Recalculate connectors on window resize
+            window.addEventListener('resize', function() {
+                // Remove existing connectors
+                document.querySelectorAll('.connector').forEach(connector => {
+                    connector.remove();
+                });
+                
+                // Create new connectors
+                branches.forEach(branch => {
+                    createConnector(centralHub, branch);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

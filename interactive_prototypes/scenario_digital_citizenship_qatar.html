@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Citizenship in Qatar - Online Toxicity Education</title>
+    <style>
+        :root {
+            --primary-color: #009688;
+            --secondary-color: #f8f9fa;
+            --accent-color: #4CAF50;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), #00796b);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        
+        .header p {
+            margin: 0.5rem 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .navigation {
+            background-color: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .navigation a {
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-right: 0.5rem;
+        }
+        
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .content-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .content-section h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.5rem;
+        }
+        
+        .scenario {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        }
+        
+        .chat-container {
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            margin: 1rem 0;
+            max-width: 500px;
+        }
+        
+        .chat-header {
+            background-color: #f1f3f5;
+            padding: 0.5rem 1rem;
+            border-bottom: 1px solid #e9ecef;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            font-weight: bold;
+        }
+        
+        .chat-messages {
+            padding: 1rem;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message-sender {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .message-content {
+            background-color: #f1f3f5;
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
+            display: inline-block;
+            max-width: 80%;
+            align-self: flex-start;
+        }
+        
+        .message.sent .message-content {
+            background-color: var(--primary-color);
+            color: white;
+            align-self: flex-end;
+        }
+        
+        .message.sent .message-sender {
+            align-self: flex-end;
+        }
+        
+        .response-option {
+            background-color: white;
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .response-option h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .recommended h3 {
+            color: var(--accent-color);
+        }
+        
+        .recommended h3::before {
+            content: "✓";
+            background-color: var(--accent-color);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .not-recommended h3 {
+            color: #dc3545;
+        }
+        
+        .not-recommended h3::before {
+            content: "✗";
+            background-color: #dc3545;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .impact-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .impact-box h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        .resources {
+            background-color: #e9f7ef;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .resources h3 {
+            color: var(--accent-color);
+            margin-top: 0;
+        }
+        
+        .resources ul {
+            margin-bottom: 0;
+        }
+        
+        .reflection-questions {
+            background-color: #e3f2fd;
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .reflection-questions h3 {
+            color: #1976d2;
+            margin-top: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .container {
+                padding: 0.5rem;
+            }
+            
+            .content-section {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Digital Citizenship in Qatar</h1>
+        <p>Understanding rights and responsibilities under Qatar's laws</p>
+    </div>
+    
+    <div class="navigation">
+        <a href="index.html">Home</a> > <a href="understanding_online_toxicity.html">Understanding Online Toxicity</a> > Digital Citizenship in Qatar
+    </div>
+    
+    <div class="container">
+        <div class="content-section">
+            <h2>What is Digital Citizenship in Qatar?</h2>
+            <p>Digital citizenship in Qatar refers to the responsible and ethical use of technology while understanding the specific legal framework that governs online behavior in the country. Qatar has developed comprehensive cybercrime and digital communication laws that reflect both international standards and local cultural and religious values.</p>
+            <p>For youth in Qatar, being a good digital citizen means understanding these laws and regulations, respecting the country's cultural norms in online spaces, and knowing how to protect yourself and others from harmful online behaviors. This includes awareness of Qatar's specific regulations regarding privacy, defamation, content sharing, and online respect.</p>
+            <p>The following scenarios illustrate common situations related to digital citizenship in Qatar and provide guidance on how to navigate online spaces responsibly within the country's legal and cultural framework.</p>
+        </div>
+        
+        <div class="content-section">
+            <h2>Scenario 1: Understanding Qatar's Cybercrime Laws</h2>
+            <div class="scenario">
+                <p><strong>Setting:</strong> School discussion about online rights and responsibilities</p>
+                <p>Jassim, 17, is participating in a class discussion about digital citizenship at his high school in Doha. The teacher mentions that Qatar has specific cybercrime laws that differ from those in some other countries. Jassim realizes he's not fully aware of what online behaviors might be illegal in Qatar, particularly regarding content sharing, photography, and social media posts. He wonders what his legal responsibilities are as a young digital citizen in Qatar.</p>
+                
+                <div class="chat-container">
+                    <div class="chat-header">Class Discussion</div>
+                    <div class="chat-messages">
+                        <div class="message">
+                            <div class="message-sender">Teacher</div>
+                            <div class="message-content">Qatar's Cybercrime Law (Law No. 14 of 2014) covers many online behaviors. It's important for you as young digital citizens to understand what's legal and what isn't when you're online.</div>
+                        </div>
+                        <div class="message">
+                            <div class="message-sender">Classmate</div>
+                            <div class="message-content">Can we get in trouble for sharing memes or videos we find online?</div>
+                        </div>
+                        <div class="message">
+                            <div class="message-sender">Teacher</div>
+                            <div class="message-content">It depends on the content. Sharing material that violates others' privacy, contains defamatory content, or contradicts Qatar's values could potentially violate the law.</div>
+                        </div>
+                        <div class="message sent">
+                            <div class="message-sender">Jassim</div>
+                            <div class="message-content">What about taking photos in public places or at events? Are there specific rules about that in Qatar?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="impact-box">
+                <h3>Key Aspects of Qatar's Digital Laws</h3>
+                <ul>
+                    <li><strong>Privacy Protection:</strong> Qatar's laws strongly protect individual privacy. Sharing photos or information about others without consent can be illegal.</li>
+                    <li><strong>Content Restrictions:</strong> Content that contradicts Islamic values, Qatari traditions, or public morals is prohibited.</li>
+                    <li><strong>Defamation:</strong> Qatar has strict laws against defamation, including online comments that damage someone's reputation.</li>
+                    <li><strong>Photography Regulations:</strong> Taking photos of people without permission, especially in private settings, can violate privacy laws.</li>
+                    <li><strong>National Security:</strong> Sharing content that could harm national security or relations with other countries is prohibited.</li>
+                </ul>
+            </div>
+            
+            <div class="response-option recommended">
+                <h3>Recommended: Educate Yourself About Qatar's Digital Laws</h3>
+                <p>Take proactive steps to understand the legal framework:</p>
+                <p>"I should learn more about Qatar's specific digital laws to be a responsible online citizen. I'll:
+                <br>1. Research the key provisions of Qatar's Cybercrime Law (Law No. 14 of 2014)
+                <br>2. Follow the Ministry of Interior's social media accounts for updates on digital laws
+                <br>3. Attend digital citizenship workshops offered at school or community centers
+                <br>4. Discuss with parents and teachers when I'm unsure if certain online activities are permitted"</p>
+                <p>This approach demonstrates responsible digital citizenship through proactive education about local laws.</p>
+            </div>
+            
+            <div class="response-option recommended">
+                <h3>Recommended: Apply the "Public Values" Test</h3>
+                <p>Develop a personal framework for evaluating online actions:</p>
+                <p>"Before posting or sharing content online, I'll ask myself:
+                <br>- Does this respect others' privacy and dignity?
+                <br>- Is this content aligned with Qatar's cultural and religious values?
+                <br>- Would this content be appropriate to share in a public setting in Qatar?
+                <br>- Have I obtained proper permission if other people are featured?
+                <br>- Could this content be misinterpreted or cause harm to individuals or groups?"</p>
+                <p>This framework helps apply Qatar's legal and cultural expectations to everyday online decisions.</p>
+            </div>
+            
+            <div class="response-option not-recommended">
+                <h3>Not Recommended: Assuming International Standards Apply</h3>
+                <p>Ignoring Qatar's specific legal framework:</p>
+                <p>"The internet is global, so I can follow the same rules as my friends in other countries. If content is allowed on international platforms, it must be okay to share in Qatar too."</p>
+                <p>This approach fails to recognize that Qatar, like many countries, has specific laws governing online behavior that may differ from international norms or other countries' regulations.</p>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h2>Scenario 2: Reporting Online Violations</h2>
+            <div class="scenario">
+                <p><strong>Setting:</strong> Social media platform popular among Qatari teens</p>
+                <p>Hind, 15, discovers an anonymous account that is posting altered photos of students from her school in Doha, adding inappropriate comments and mockery. Some students are being severely bullied as a result, and one friend is particularly distressed about her privacy being violated. Hind knows this behavior is wrong, but she's unsure about the proper channels for reporting such violations in Qatar and what protections exist for those affected.</p>
+                
+                <div class="chat-container">
+                    <div class="chat-header">Private Message</div>
+                    <div class="chat-messages">
+                        <div class="message">
+                            <div class="message-sender">Friend</div>
+                            <div class="message-content">Hind, have you seen that anonymous account posting edited photos of students? They posted one of me yesterday and I'm so embarrassed. People are making fun of me in the comments. I don't know what to do.</div>
+                        </div>
+                        <div class="message sent">
+                            <div class="message-sender">Hind</div>
+                            <div class="message-content">I'm so sorry this is happening to you. This is definitely wrong and against Qatar's cyberbullying laws. We should report this. Let me find out the proper way to do it.</div>
+                        </div>
+                        <div class="message">
+                            <div class="message-sender">Friend</div>
+                            <div class="message-content">Can we really do anything about it? I'm worried that reporting it might make things worse or draw more attention to the photos.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="impact-box">
+                <h3>Reporting Options in Qatar</h3>
+                <ul>
+                    <li><strong>Platform Reporting:</strong> Social media platforms have reporting mechanisms for content that violates their community guidelines.</li>
+                    <li><strong>School Authorities:</strong> School counselors and administrators can address cyberbullying involving students.</li>
+                    <li><strong>Cyber Crime Investigation Center:</strong> Qatar's Ministry of Interior has a dedicated center for investigating cybercrimes.</li>
+                    <li><strong>Al Ameen Service:</strong> A confidential service for reporting various issues, including online harassment.</li>
+                    <li><strong>Legal Protections:</strong> Qatar's laws provide strong protections against privacy violations, defamation, and cyberbullying.</li>
+                </ul>
+            </div>
+            
+            <div class="response-option recommended">
+                <h3>Recommended: Follow Qatar's Multi-Level Reporting Approach</h3>
+                <p>Take systematic action through appropriate channels:</p>
+                <p>"Let's address this properly through multiple channels:
+                <br>1. First, report the account to the platform for violating community guidelines on harassment and privacy
+                <br>2. Inform a trusted teacher or school counselor, as this involves students from our school
+                <br>3. Document everything by taking screenshots of the posts (but don't share them further)
+                <br>4. If the situation doesn't improve, report to Qatar's Cyber Crime Investigation Center through the Metrash2 app or by calling 2347444
+                <br>5. Your parents might also consider filing a formal complaint if the harassment continues"</p>
+                <p>This structured approach follows Qatar's recommended steps for addressing online violations.</p>
+            </div>
+            
+            <div class="response-option recommended">
+                <h3>Recommended: Provide Support While Taking Action</h3>
+                <p>Balance reporting with emotional support:</p>
+                <p>"I understand you're worried about drawing more attention to this. In Qatar, you have strong legal protections against this kind of harassment. The Cybercrime Law specifically prohibits using technology to violate others' privacy or dignity. While we report this, I'll support you by:
+                <br>- Helping you talk to your parents or a trusted adult
+                <br>- Reminding other friends not to share or engage with the harmful content
+                <br>- Checking in with you regularly to see how you're doing
+                <br>- Reminding you that this reflects poorly on the person posting, not on you"</p>
+                <p>This approach recognizes the emotional impact while taking advantage of Qatar's strong legal protections.</p>
+            </div>
+            
+            <div class="response-option not-recommended">
+                <h3>Not Recommended: Taking Matters Into Your Own Hands</h3>
+                <p>Responding with counter-attacks or public shaming:</p>
+                <p>"Let's create our own account to expose whoever is doing this! We can post about how pathetic they are and get everyone to attack them back!"</p>
+                <p>This approach could violate the same laws being used against your friend and escalate the situation rather than resolve it. It doesn't utilize Qatar's established systems for addressing online violations.</p>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h2>Qatar-Specific Resources</h2>
+            <div class="resources">
+                <h3>Digital Citizenship Resources in Qatar</h3>
+                <ul>
+                    <li><strong>Ministry of Interior Cybercrime Department</strong> - For reporting online violations: Contact via Metrash2 app, call 2347444, or email cccc@moi.gov.qa</li>
+                    <li><strong>Al Ameen Service</strong> - Confidential reporting service: Call 2347444 or use the Al Ameen app</li>
+                    <li><strong>Ministry of Communications and Information Technology (MCIT)</strong> - Digital literacy resources: <a href="https://www.mcit.gov.qa/en" target="_blank">www.mcit.gov.qa</a></li>
+                    <li><strong>SafeSpace Qatar</strong> - Online safety resources: <a href="https://www.safespace.qa/en" target="_blank">www.safespace.qa</a></li>
+                    <li><strong>Qatar's Cybercrime Law (Law No. 14 of 2014)</strong> - Available through the Ministry of Justice website</li>
+                    <li><strong>National Human Rights Committee (Qatar)</strong> - For rights-related concerns: <a href="https://www.nhrc-qa.org/en" target="_blank">www.nhrc-qa.org</a></li>
+                </ul>
+            </div>
+            
+            <div class="reflection-questions">
+                <h3>Reflection Questions</h3>
+                <ol>
+                    <li>How do Qatar's digital laws reflect both international standards and local cultural values?</li>
+                    <li>What responsibilities do you have as a digital citizen in Qatar that might differ from other countries?</li>
+                    <li>How can you balance freedom of expression with respect for Qatar's cultural and legal framework?</li>
+                    <li>What steps would you take if you witnessed online behavior that violates Qatar's cybercrime laws?</li>
+                    <li>How might Qatar's approach to digital citizenship evolve as technology continues to advance?</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
